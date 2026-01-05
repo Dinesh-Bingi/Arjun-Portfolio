@@ -12,6 +12,7 @@ interface ProjectCardProps {
   image?: string;
   genre?: string;
   hasImage?: boolean;
+  imageOnly?: boolean;
 }
 
 const ProjectCard = ({
@@ -25,25 +26,87 @@ const ProjectCard = ({
   image,
   genre,
   hasImage = false,
+  imageOnly = false,
 }: ProjectCardProps) => {
-  // Image-based card layout (for personal projects with images)
-  if (hasImage && image) {
+  // Image-only mode: render all cards as image-only (for landing page)
+  if (imageOnly) {
     return (
       <motion.div
-        className="relative group cursor-pointer"
+        className="relative group cursor-pointer h-full"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-50px" }}
         transition={{ duration: 0.8, delay: index * 0.15, ease: [0.4, 0, 0.2, 1] }}
         whileHover={{ 
-          scale: 1.02, 
           y: -5,
           transition: { duration: 0.3 } 
         }}
         onClick={onClick}
       >
         {/* Image container with border and glow */}
-        <div className="relative rounded-lg overflow-hidden border border-primary/30 group-hover:border-primary/60 transition-all duration-300 group-hover:shadow-[0_0_30px_hsla(262,83%,58%,0.3)]">
+        <div className="relative rounded-lg overflow-hidden border border-primary/30 group-hover:border-primary/60 transition-all duration-300 group-hover:shadow-[0_0_30px_hsla(262,83%,58%,0.3)] h-full">
+          {/* Animated glow effect on hover */}
+          <motion.div
+            className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10"
+            style={{
+              background: "radial-gradient(circle at center, hsla(262, 83%, 58%, 0.15) 0%, transparent 70%)",
+            }}
+          />
+          
+          {/* Project image or placeholder */}
+          {image ? (
+            <img
+              src={image}
+              alt={title}
+              loading="lazy"
+              className="aspect-video w-full object-cover object-center bg-secondary/80"
+              style={{
+                imageRendering: 'auto',
+                WebkitImageRendering: '-webkit-optimize-contrast',
+                willChange: 'auto',
+              }}
+            />
+          ) : (
+            <div className="aspect-video bg-secondary/80 relative overflow-hidden">
+              <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/5">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center">
+                  {icon}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Hover indicator button */}
+          <motion.div
+            className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20"
+            whileHover={{ scale: 1.1 }}
+          >
+            <div className="w-10 h-10 rounded-full bg-background/80 backdrop-blur-sm border border-primary/40 flex items-center justify-center">
+              <ExternalLink className="w-5 h-5 text-primary" />
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+    );
+  }
+
+  // Image-based card layout (for personal projects with images)
+  if (hasImage && image) {
+    return (
+      <motion.div
+        className="relative group cursor-pointer h-full"
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-50px" }}
+        transition={{ duration: 0.8, delay: index * 0.15, ease: [0.4, 0, 0.2, 1] }}
+        whileHover={{ 
+          y: -5,
+          transition: { duration: 0.3 } 
+        }}
+        onClick={onClick}
+      >
+        {/* Image container with border and glow */}
+        <div className="relative rounded-lg overflow-hidden border border-primary/30 group-hover:border-primary/60 transition-all duration-300 group-hover:shadow-[0_0_30px_hsla(262,83%,58%,0.3)] h-full">
           {/* Animated glow effect on hover */}
           <motion.div
             className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none z-10"
@@ -53,13 +116,16 @@ const ProjectCard = ({
           />
           
           {/* Project image */}
-          <div className="aspect-video bg-secondary/80 relative overflow-hidden">
-            <img 
-              src={image} 
-              alt={title}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-          </div>
+          <img
+            src={image}
+            alt={title}
+            loading="lazy"
+            className="aspect-video w-full object-cover object-center bg-secondary/80"
+            style={{
+              imageRendering: 'crisp-edges',
+              WebkitImageRendering: '-webkit-optimize-contrast',
+            }}
+          />
 
           {/* Hover indicator button */}
           <motion.div
@@ -78,7 +144,7 @@ const ProjectCard = ({
   // Default card layout (for group projects without images)
   return (
     <motion.div
-      className="relative group cursor-pointer rounded-xl p-6 md:p-8 bg-secondary/50 backdrop-blur-sm border border-primary/20 hover:border-primary/40 transition-all duration-300"
+      className="relative group cursor-pointer rounded-xl p-6 md:p-8 bg-secondary/50 backdrop-blur-sm border border-primary/20 hover:border-primary/40 transition-all duration-300 h-full flex flex-col"
       initial={{ opacity: 0, y: 40, rotateX: 10 }}
       whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
       viewport={{ once: true, margin: "-50px" }}

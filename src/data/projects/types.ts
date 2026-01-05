@@ -83,6 +83,8 @@ export interface ImageGridSection {
     src: string;
     alt: string;
     caption?: string;
+    link?: string;
+    linkText?: string;
   }>;
   columns?: 2 | 3 | 4;
 }
@@ -134,6 +136,12 @@ export interface DevelopmentSection {
       src: string;
       placeholder?: string;
     };
+    images?: Array<{
+      src: string;
+      placeholder?: string;
+      link?: string;
+      linkText?: string;
+    }>;
   }>;
 }
 
@@ -197,6 +205,12 @@ export interface CustomSection {
   props?: Record<string, unknown>;
 }
 
+export interface LevelExperienceCTASection {
+  type: "levelExperienceCTA";
+  url?: string;
+  imageUrl?: string;
+}
+
 // Union of all section types
 export type ProjectSection =
   | VideoSection
@@ -213,6 +227,7 @@ export type ProjectSection =
   | PostMortemSection
   | CreditsSection
   | TwoColumnSection
+  | LevelExperienceCTASection
   | CustomSection;
 
 // Complete project with flexible sections

@@ -30,7 +30,7 @@ const navLinks: ProjectNavLink[] = [{
   href: "#about"
 }, {
   label: "Resume",
-  href: "/FelipeFleming_CV.pdf",
+  href: "/Arjun_CV.pdf",
   isExternal: true
 }, {
   label: "Contact",

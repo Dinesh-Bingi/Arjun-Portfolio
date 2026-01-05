@@ -1,9 +1,10 @@
 import { useState } from "react";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
+import HomeSkillsSection from "@/components/HomeSkillsSection";
 import AboutSection from "@/components/AboutSection";
 import ProjectsSection from "@/components/ProjectsSection";
-
+import EnvironmentArtSection from "@/components/EnvironmentArtSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import ContactSection from "@/components/ContactSection";
 import EasterEgg from "@/components/EasterEgg";
@@ -40,7 +41,7 @@ const Index = () => {
         className="relative min-h-screen bg-background overflow-x-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: isLoading ? 0 : 1 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
       >
         {/* Atmospheric overlays */}
         <div className="noise-overlay" />
@@ -51,14 +52,18 @@ const Index = () => {
         <Navigation />
         
         {/* Main content */}
-        <main>
+        <main className="pt-16">
           <div id="home">
             <HeroSection />
           </div>
           
+          <HomeSkillsSection />
+          
           <div id="personal-projects">
             <ProjectsSection />
           </div>
+          
+          <EnvironmentArtSection />
           
           <div id="professional-work">
             <ExperienceSection />

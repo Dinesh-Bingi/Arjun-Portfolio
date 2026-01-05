@@ -27,15 +27,15 @@ export const metroDescent: Project = {
         title: "Project Overview",
         paragraphs: [
           {
-            text: "Echoes of Stella is a first-person psychological horror game created during Game Project 3 at Futuregames. The project focuses on atmosphere, tension, and exploration, avoiding traditional combat in favor of environmental storytelling and controlled pacing.",
+            text: "Echoes of Stella is a first-person psychological horror game\ncreated during Game Project 3 at Futuregames. The game focuses\non atmosphere, tension, and exploration instead of combat.",
             highlights: ["Echoes of Stella", "first-person psychological horror", "atmosphere", "tension", "exploration"],
           },
           {
-            text: "The game was developed by a team of 15 students over a seven-week period, with the goal of creating fear through level design, gameplay systems, and scripted events. The project was built in Unreal Engine 5.",
+            text: "It was developed by a team of 15 students over a seven-week\nperiod, with the goal of creating fear through level design,\ngameplay systems, and scripted events. The project was built\nin Unreal Engine 5.",
             highlights: ["15 students", "seven-week period", "level design", "gameplay systems", "scripted events", "Unreal Engine 5"],
           },
           {
-            text: "My contribution focused on level design, technical gameplay systems, and gameplay narrative planning, shaping how the player experiences the story through movement, interaction, and environmental changes rather than dialogue or cutscenes.",
+            text: "My work focused on level design, technical gameplay systems,\nand gameplay narrative planning, shaping how the player\nexperiences the story through movement, interaction, and\nenvironmental changes rather than dialogue or cutscenes.",
             highlights: ["level design", "technical gameplay systems", "gameplay narrative planning", "movement", "interaction", "environmental changes"],
           },
         ],
@@ -44,24 +44,24 @@ export const metroDescent: Project = {
         title: "Focus Areas",
         bulletPoints: [
           {
-            label: "Level Design & Player Flow:",
-            text: "Designed level layouts that guide the player naturally through the environment, focusing on pacing, exploration, tension, and controlled visibility. The layout was structured to gradually escalate fear while maintaining clarity and direction.",
+            label: "Level Design",
+            text: "Designed level layouts and\nplayer flow, focusing on pacing,\nexploration, tension, and guiding the player\nnaturally through the environment.",
           },
           {
-            label: "Technical Level Design:",
-            text: "Implemented gameplay systems using Unreal Engine Blueprints, including doors, traps, triggers, and interactive objects that respond to player progression and actions.",
+            label: "Technical Level Design",
+            text: "Implemented\ngameplay systems using Unreal Engine\nBlueprints, including door systems, player\nfall traps, triggers, and object\ninteractions.",
           },
           {
-            label: "Gameplay Narrative Design:",
-            text: "Planned how the story is experienced through gameplay by deciding when and where events occur, using progression, triggers, and environment changes to deliver narrative moments naturally.",
+            label: "Gameplay Narrative Design",
+            text: "Planned how\nthe story is experienced through\ngameplay by deciding progression, event\ntiming, and story moments delivered\nthrough level design and triggers.",
           },
           {
-            label: "Gameplay Systems & Triggers:",
-            text: "Implemented scripted events such as objects falling, sudden environment changes, scare moments, trap sequences, and camera shake to control pacing and horror intensity.",
+            label: "Gameplay Systems & Triggers",
+            text: "Implemented scripted events such as\nobjects falling, objects moving suddenly,\nenvironment changes, scare spawns, and\ntrap sequences with camera shake.",
           },
           {
-            label: "UI & Gameplay Integration:",
-            text: "Implemented the mirror shard system, including UI feedback, shard collection logic, and the final mirror interaction sequence that ties gameplay progression to the narrative climax.",
+            label: "UI & Gameplay Integration",
+            text: "Implemented\nthe mirror shard system, including UI\nfeedback, shard collection logic, and the\nfinal mirror interaction sequence.",
           },
         ],
       },
@@ -111,12 +111,16 @@ export const metroDescent: Project = {
         title: "Narrative Summary",
         paragraphs: [
           {
-            text: "Echoes of Stella tells its story through atmosphere, exploration, and environmental change.",
-            highlights: ["Echoes of Stella", "atmosphere", "exploration", "environmental change"],
+            text: "Planned when and where story moments happen during gameplay, using level\nprogression to guide the player through the mirror world naturally.",
+            highlights: ["story moments", "gameplay", "level progression", "mirror world"],
           },
           {
-            text: "As the player progresses through the mirror world, story elements are revealed through level transitions, environmental storytelling, mirror shard progression, and scripted events and interactions. Rather than relying on dialogue or cutscenes, the narrative unfolds through player movement, object interaction, and changes in the environment, reinforcing immersion and tension throughout the experience.",
-            highlights: ["mirror world", "level transitions", "environmental storytelling", "mirror shard progression", "scripted events"],
+            text: "Used gameplay events, triggers, environmental changes, and mirror shard\nprogression to support story beats and pacing.",
+            highlights: ["gameplay events", "triggers", "environmental changes", "mirror shard progression", "story beats", "pacing"],
+          },
+          {
+            text: "Delivered the story through player movement, interactions with mirrors and\nobjects, and scripted events instead of dialogue or cutscenes.",
+            highlights: ["player movement", "interactions", "mirrors", "objects", "scripted events"],
           },
         ],
       },
@@ -135,28 +139,59 @@ export const metroDescent: Project = {
     
     // Gameplay Systems & Interactions
     {
-      type: "text",
+      type: "development",
       title: "Gameplay Systems & Interactions",
-      paragraphs: [
+      subsections: [
         {
-          text: "My work focused on gameplay systems that react to the player's actions and control how the environment responds during play.",
-          highlights: ["gameplay systems", "player's actions", "environment"],
-        },
-        {
-          text: "Door Systems: Implemented interactive door systems using Blueprints. Doors respond to player input, triggers, and progression states, helping control pacing and access to spaces.",
-          highlights: ["Door Systems", "Blueprints", "player input", "triggers", "progression states"],
-        },
-        {
-          text: "Triggers & Scripted Events: Implemented trigger-based gameplay events across the levels, used for horror moments, environmental changes, and controlled scare timing.",
-          highlights: ["Triggers", "Scripted Events", "horror moments", "environmental changes"],
-        },
-        {
-          text: "Traps: Implemented player fall traps that drop the player into new areas. Camera shake and forced movement were used to sell impact and fear.",
-          highlights: ["Traps", "camera shake", "forced movement"],
-        },
-        {
-          text: "Mirror Shard Gameplay System: Implemented mirror shard collection logic and connected shard progression to gameplay flow. Designed and implemented the final mirror interaction where collected shards are placed into the mirror holder.",
-          highlights: ["Mirror Shard Gameplay System", "collection logic", "gameplay flow", "mirror interaction"],
+          title: "",
+          paragraphs: [
+            {
+              text: "My work focused on gameplay systems that react to the player's actions and\ncontrol how the environment responds during play. These systems were\ndesigned to support horror, tension, and story progression through interaction\nrather than direct player control or combat mechanics.",
+              highlights: ["gameplay systems", "player's actions", "environment"],
+            },
+            {
+              text: "Door Systems: Implemented interactive door systems using Blueprints. Doors\nrespond to player input, triggers, and progression states, helping control\npacing and access to spaces.",
+              highlights: ["Door Systems", "Blueprints", "player input", "triggers", "progression states"],
+            },
+            {
+              text: "Triggers & Scripted Events: Implemented trigger-based gameplay events across\nthe levels. Triggers were used for horror moments, environmental changes, and\ncontrolled scare timing.",
+              highlights: ["Triggers", "Scripted Events", "horror moments", "environmental changes"],
+            },
+            {
+              text: "Traps: Implemented player fall traps that drop the player into new areas.\nCamera shake and forced movement were used to sell impact and fear.",
+              highlights: ["Traps", "camera shake", "forced movement"],
+            },
+            {
+              text: "Mirror Shard Gameplay System: Implemented mirror shard collection logic and\nconnected shard progression to gameplay flow. Designed and implemented the\nfinal mirror interaction where collected shards are placed into the mirror\nholder.",
+              highlights: ["Mirror Shard Gameplay System", "collection logic", "gameplay flow", "mirror interaction"],
+            },
+          ],
+          images: [
+            { 
+              src: "/images/gameplay-systems-1.jpg", 
+              placeholder: "Gameplay Image 1",
+              link: "https://blueprintue.com/blueprint/8_voazew/",
+              linkText: "Link to Blueprint"
+            },
+            { 
+              src: "/images/gameplay-systems-2.jpg", 
+              placeholder: "Gameplay Image 2",
+              link: "https://blueprintue.com/blueprint/kt1ikrre/",
+              linkText: "Link to Blueprint"
+            },
+            { 
+              src: "/images/gameplay-systems-3.jpg", 
+              placeholder: "Gameplay Image 3",
+              link: "https://blueprintue.com/blueprint/xrjpamj9/",
+              linkText: "Link to Blueprint"
+            },
+            { 
+              src: "/images/gameplay-systems-4.jpg", 
+              placeholder: "Gameplay Image 4",
+              link: "https://blueprintue.com/blueprint/rot4mxk4/",
+              linkText: "Link to Blueprint"
+            },
+          ],
         },
       ],
     },
@@ -164,24 +199,36 @@ export const metroDescent: Project = {
     // Explorative Items
     {
       type: "imageGrid",
-      title: "Exploration & Interactive Objects",
+      title: "Exploration & Interactive Objects (My Contribution)",
       description: {
-        text: "Exploration plays a central role in Echoes of Stella. The mirror shard system acts as a key exploration mechanic. Shards are placed in specific areas to guide the player through the level while encouraging exploration. Their placement controls pacing and supports the story flow naturally.",
-        highlights: ["Exploration", "mirror shard system", "exploration mechanic", "pacing", "story flow"],
+        text: "My work on exploration focused on interactive objects and progression items that guide the player through the level\nand support the gameplay narrative.",
+        highlights: ["exploration", "interactive objects", "progression items", "gameplay narrative"],
       },
       bulletPoints: [
         {
-          label: "Mirror Shard System:",
-          text: "The mirror shard system acts as a key exploration mechanic. Shards are placed in specific areas to guide the player through the level while encouraging exploration. Their placement controls pacing and supports the story flow naturally.",
+          label: "",
+          text: "The mirror shard system and key collect system was designed as a key exploration mechanic. Shards and keys are\nplaced in specific areas to guide the player through the level and encourage exploration. Collecting mirror shards and\nkeys is required to progress, and their placement helps control pacing while supporting the story flow naturally during\ngameplay.",
         },
         {
-          label: "Interactive Environment Objects:",
-          text: "I also implemented interactive environment objects that react to the player. Some objects fall or move suddenly when the player enters certain areas, creating surprise and tension. These events are triggered based on player position and progression, making the environment feel alive, unsafe, and connected to the horror experience.",
+          label: "",
+          text: "I also implemented interactive environment objects that react to the player. Some objects fall or move suddenly when\nthe player enters an area, creating surprise and tension. These events are triggered based on player position and\nprogression, making the environment feel alive, unsafe, and closely connected to the horror experience.",
         },
       ],
       images: [
-        { src: "/images/echo-stella-mirror-shard.png", alt: "Mirror Shard", caption: "Mirror Shard" },
-        { src: "/images/echo-stella-key.png", alt: "Key Item", caption: "Key Item" },
+        { 
+          src: "/images/mirror-shard.jpg", 
+          alt: "Mirror Shard", 
+          caption: "Mirror Shard",
+          link: "https://blueprintue.com/blueprint/obqcz91o/",
+          linkText: "Link to Blueprint"
+        },
+        { 
+          src: "/images/key-item.png", 
+          alt: "Key Item", 
+          caption: "Key Item",
+          link: "https://blueprintue.com/blueprint/m8go27hs/",
+          linkText: "Link to Blueprint"
+        },
       ],
       columns: 2,
     },
@@ -200,32 +247,7 @@ export const metroDescent: Project = {
           highlights: ["space", "sound", "interaction", "exploration"],
         },
       ],
-      mapImage: "/images/echo-stella-level-layout-map.png",
-    },
-    
-    // Design Techniques
-    {
-      type: "development",
-      title: "Design Techniques",
-      intro: {
-        text: "While working on level design and gameplay implementation, I focused on guiding the player naturally, building tension, and supporting the gameplay narrative through space, timing, and interaction. My approach was not about visual polish alone, but about how level structure, triggers, and events affect player experience.",
-        highlights: ["level design", "gameplay implementation", "guiding the player", "tension", "gameplay narrative", "level structure", "triggers", "events"],
-      },
-      subsections: [
-        {
-          title: "",
-          paragraphs: [
-            { text: "Player Guidance Through Level Design: Used level layout and paths to guide players without heavy UI. Placed doors, corridors, and narrow spaces to control player movement. Used open and closed spaces to manage pacing and tension.", highlights: ["Player Guidance Through Level Design", "level layout", "paths", "doors", "corridors", "pacing", "tension"] },
-            { text: "Spatial Tension & Flow: Designed tight corridors to create fear and pressure. Used larger spaces after tight areas to give brief relief. Controlled how much the player can see at a time.", highlights: ["Spatial Tension & Flow", "tight corridors", "fear", "pressure", "relief"] },
-            { text: "Surprise Moments: Implemented moments where the environment behaves unexpectedly. Used sudden events to break player expectations. These moments were carefully timed using triggers, not random behavior.", highlights: ["Surprise Moments", "unexpectedly", "sudden events", "triggers"] },
-          ],
-          media: {
-            type: "image",
-            src: "",
-            placeholder: "Design Image 1",
-          },
-        },
-      ],
+      mapImage: "/images/group-level-layout.png",
     },
     
     // Level Beats
@@ -278,6 +300,40 @@ export const metroDescent: Project = {
       imageUrl: "/images/echo-stella-pacing-tension-graph.png",
     },
     
+    // Design Techniques
+    {
+      type: "development",
+      title: "Design Techniques",
+      intro: {
+        text: "While working on level design and gameplay implementation, I focused on guiding the player naturally, building tension, and supporting the gameplay narrative through space, timing, and interaction. My approach was not about visual polish alone, but about how level structure, triggers, and events affect player experience.",
+        highlights: ["level design", "gameplay implementation", "guiding the player", "tension", "gameplay narrative", "level structure", "triggers", "events"],
+      },
+      subsections: [
+        {
+          title: "",
+          paragraphs: [
+            { text: "Player Guidance Through Level Design: Used level layout and paths to guide players without heavy UI. Placed doors, corridors, and narrow spaces to control player movement. Used open and closed spaces to manage pacing and tension.", highlights: ["Player Guidance Through Level Design", "level layout", "paths", "doors", "corridors", "pacing", "tension"] },
+            { text: "Spatial Tension & Flow: Designed tight corridors to create fear and pressure. Used larger spaces after tight areas to give brief relief. Controlled how much the player can see at a time.", highlights: ["Spatial Tension & Flow", "tight corridors", "fear", "pressure", "relief"] },
+            { text: "Surprise Moments: Implemented moments where the environment behaves unexpectedly. Used sudden events to break player expectations. These moments were carefully timed using triggers, not random behavior.", highlights: ["Surprise Moments", "unexpectedly", "sudden events", "triggers"] },
+          ],
+          media: {
+            type: "image",
+            src: "/images/design-technique-1.jpg",
+            placeholder: "Design Technique 1",
+          },
+        },
+        {
+          title: "",
+          paragraphs: [],
+          media: {
+            type: "image",
+            src: "/images/design-technique-2.jpg",
+            placeholder: "Design Technique 2",
+          },
+        },
+      ],
+    },
+    
     // Development Section
     {
       type: "development",
@@ -299,7 +355,6 @@ export const metroDescent: Project = {
           media: {
             type: "image",
             src: "",
-            placeholder: "Development workflow image placeholder - upload your image",
           },
         },
         {
@@ -310,10 +365,17 @@ export const metroDescent: Project = {
           ],
           media: {
             type: "video",
-            src: "/videos/echo-stella-blockout-walkthrough.mp4",
+            src: "/videos/echo-stella-production-process.mp4",
           },
         },
       ],
+    },
+    
+    // Experience the Level CTA
+    {
+      type: "levelExperienceCTA",
+      url: "https://drive.google.com/file/d/1wnYiZoga-paFaEyTfrQWnUsODlXUb8-2/view?usp=sharing",
+      imageUrl: "/images/cta-reference.png",
     },
     
     // Post-Mortem

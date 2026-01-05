@@ -257,6 +257,13 @@ export const theLightRemains: Project = {
       ],
     },
     
+    // Experience the Level CTA
+    {
+      type: "levelExperienceCTA",
+      url: "https://your-playable-build-link-here",
+      imageUrl: "/images/cta-reference.png",
+    },
+    
     // Post-Mortem
     {
       type: "postMortem",

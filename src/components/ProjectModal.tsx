@@ -13,49 +13,57 @@ interface ProjectModalProps {
 const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
   useEffect(() => {
     if (project) {
+      // Store original overflow value
+      const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
+      
+      return () => {
+        // Restore original overflow value
+        document.body.style.overflow = originalOverflow || "";
+      };
     }
+  }, [project]);
+  
+  // Cleanup on unmount
+  useEffect(() => {
     return () => {
       document.body.style.overflow = "";
     };
-  }, [project]);
+  }, []);
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        // Check if lightbox is open - if so, let it handle ESC first
+        const lightbox = document.querySelector('[data-lightbox-open="true"]');
+        if (!lightbox) {
+          onClose();
+        }
+      }
     };
     window.addEventListener("keydown", handleEscape);
     return () => window.removeEventListener("keydown", handleEscape);
   }, [onClose]);
 
+  const isEchoesOfStella = project?.id === "metro-descent";
+
   return (
     <AnimatePresence>
       {project && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
+          className="fixed inset-0 z-[100] w-screen h-screen overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.2 }}
         >
-          {/* Backdrop */}
+          {/* Fullscreen content */}
           <motion.div
-            className="absolute inset-0 bg-background/90 backdrop-blur-xl"
-            onClick={onClose}
+            className="relative w-full h-full overflow-y-auto bg-gradient-to-br from-card to-background-secondary"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-          />
-
-          {/* Modal content - Fullscreen */}
-          <motion.div
-            className="relative w-screen h-screen overflow-y-auto bg-gradient-to-br from-card to-background-secondary"
-            initial={{ scale: 0.9, opacity: 0, y: 50 }}
-            animate={{ scale: 1, opacity: 1, y: 0 }}
-            exit={{ scale: 0.9, opacity: 0, y: 50 }}
-            transition={{ duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+            transition={{ duration: 0.2 }}
           >
             {/* Project Navigation */}
             <ProjectNavigation onClose={onClose} />
@@ -63,12 +71,46 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
             {/* Close button */}
             <button
               onClick={onClose}
-              className="absolute top-16 right-4 z-10 p-2 rounded-lg bg-background/50 border border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-300"
+              className="fixed top-4 right-4 z-[110] p-2 rounded-lg bg-background/80 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-200"
+              aria-label="Close project details"
             >
               <X className="w-5 h-5" />
             </button>
 
-            {/* Header area - with top padding for fixed nav */}
+            {/* Hero Cover Section - Only for Echoes of Stella */}
+            {isEchoesOfStella && project.coverImage && (
+              <motion.div
+                className="relative w-full h-32 md:h-48 mt-12 overflow-hidden"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                {/* Background Image */}
+                <div
+                  className="absolute inset-0 w-full h-full"
+                  style={{
+                    backgroundImage: `url(${project.coverImage})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
+                  }}
+                />
+                
+                {/* Dark Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/40" />
+                
+                {/* Project Details Label - Top Left */}
+                <div className="absolute top-4 left-4 flex items-center gap-2 z-10">
+                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                  <span className="font-heading text-xs tracking-wider text-primary uppercase">
+                    Project Details
+                  </span>
+                </div>
+              </motion.div>
+            )}
+
+            {/* Header area - with top padding for fixed nav (hidden for Echoes of Stella) */}
+            {!isEchoesOfStella && (
             <div className="relative h-32 md:h-48 bg-primary/10 flex items-center justify-center overflow-hidden p-0 mt-12">
               <img
                 src={project.coverImage || "/placeholder.svg"}
@@ -84,9 +126,10 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                 </span>
               </div>
             </div>
+            )}
 
             {/* Content - Centered with max-width for readability */}
-            <div className="max-w-5xl mx-auto px-6 md:px-10 lg:px-16 xl:px-20 pt-4 pb-10">
+            <div className="max-w-5xl mx-auto px-6 md:px-10 lg:px-16 xl:px-20 pt-4 pb-10 relative z-0">
               {/* Render all sections dynamically */}
               {project.sections.map((section, index) => (
                 <SectionRenderer key={index} section={section} />

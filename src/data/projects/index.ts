@@ -3,18 +3,22 @@
 
 import { Project } from "./types";
 import { theLightRemains } from "./the-light-remains";
-import { theLightRemainsGroup } from "./the-light-remains-group";
 import { forgottenValley } from "./forgotten-valley";
 import { metroDescent } from "./metro-descent";
-import { layerZero } from "./layer-zero";
+import { sabershotJackOfAllBlades } from "./sabershot-jack-of-all-blades";
+import { justMyDuck } from "./just-my-duck";
+import { sushi2Go } from "./sushi-2-go";
+import { puddleWhispers } from "./puddle-whispers";
 
 // Export all projects
 export const projects: Project[] = [
   theLightRemains,
-  theLightRemainsGroup,
   forgottenValley,
   metroDescent,
-  layerZero,
+  sabershotJackOfAllBlades,
+  puddleWhispers,
+  justMyDuck,
+  sushi2Go,
 ];
 
 // Helper functions
@@ -43,3 +47,4 @@ export const getIconComponent = (iconName: string): React.ComponentType<{ classN
 
 // Re-export types
 export type { Project, ProjectSection } from "./types";
+

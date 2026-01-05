@@ -17,7 +17,7 @@ const navLinks: NavLink[] = [
   { label: "Group Projects", href: "#group-projects", hasDropdown: true, category: "group" },
   { label: "Professional Work", href: "#professional-work" },
   { label: "About", href: "#about" },
-  { label: "Resume", href: "/FelipeFleming_CV.pdf", isExternal: true },
+  { label: "Resume", href: "/Arjun_CV.pdf", isExternal: true },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -30,10 +30,17 @@ const Navigation = () => {
   const bgOpacity = useTransform(scrollY, [0, 100], [0, 0.95]);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      setHasScrolled(window.scrollY > 50);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setHasScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -61,14 +68,13 @@ const Navigation = () => {
   return (
     <>
       <motion.nav
-        className="fixed top-0 left-0 right-0 z-40 px-6 py-4"
+        className="fixed top-0 left-0 right-0 z-50 px-6 py-4"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.8, delay: 0.5 }}
       >
         <motion.div
-          className="absolute inset-0 backdrop-blur-xl border-b border-primary/20"
-          style={{ opacity: bgOpacity }}
+          className="absolute inset-0 bg-[#0B0D10] border-b border-primary/10"
         />
         
         <div className="max-w-7xl mx-auto flex items-center justify-between relative">

@@ -10,6 +10,7 @@ import GraphSection from "./GraphSection";
 import DevelopmentSection from "./DevelopmentSection";
 import PostMortemSection from "./PostMortemSection";
 import CreditsSection from "./CreditsSection";
+import LevelExperienceCTA from "./LevelExperienceCTA";
 
 interface SectionRendererProps {
   section: ProjectSection;
@@ -39,6 +40,8 @@ const SectionRenderer = ({ section }: SectionRendererProps) => {
       return <PostMortemSection section={section} />;
     case "credits":
       return <CreditsSection section={section} />;
+    case "levelExperienceCTA":
+      return <LevelExperienceCTA url={section.url} imageUrl={section.imageUrl} />;
     case "overview":
     case "focusAreas":
     case "designPillars":

@@ -1,12 +1,12 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Mail, Linkedin, Github, Twitter } from "lucide-react";
+import { Mail, Linkedin, Youtube, Palette } from "lucide-react";
 
 const socialLinks = [
-  { icon: <Mail className="w-5 h-5" />, label: "Email", href: "mailto:arjun@example.com" },
-  { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", href: "#" },
-  { icon: <Github className="w-5 h-5" />, label: "GitHub", href: "#" },
-  { icon: <Twitter className="w-5 h-5" />, label: "Twitter", href: "#" },
+  { icon: <Mail className="w-5 h-5" />, label: "Email", href: "mailto:your@email.com" },
+  { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", href: "https://www.linkedin.com/in/arjun-kurapati-469711277" },
+  { icon: <Palette className="w-5 h-5" />, label: "ArtStation", href: "https://arjunkurapati.artstation.com/" },
+  { icon: <Youtube className="w-5 h-5" />, label: "YouTube", href: "https://www.youtube.com/@ArjunKurapati" },
 ];
 
 const ContactSection = () => {
@@ -14,7 +14,7 @@ const ContactSection = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="relative py-32 px-6" ref={ref}>
+    <section className="relative py-20 px-6" ref={ref}>
       {/* Background glow */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="w-[600px] h-[400px] bg-primary/10 blur-[150px] rounded-full" />
@@ -61,6 +61,8 @@ const ContactSection = () => {
               <motion.a
                 key={link.label}
                 href={link.href}
+                target={link.label === "Email" ? undefined : "_blank"}
+                rel={link.label === "Email" ? undefined : "noopener noreferrer"}
                 className="group relative p-4 rounded-xl bg-secondary/50 backdrop-blur-sm border border-primary/20 hover:border-primary/40 hover:bg-primary/10 transition-all duration-300"
                 whileHover={{ scale: 1.05, y: -2, boxShadow: "0 10px 30px -10px hsla(262, 83%, 58%, 0.3)" }}
                 whileTap={{ scale: 0.98 }}
@@ -89,7 +91,7 @@ const ContactSection = () => {
           transition={{ duration: 0.8, delay: 0.8 }}
         >
           <p className="font-body text-sm text-muted-foreground">
-            © 2024 Kurapati Arjun. Crafted with passion for world design.
+            © 2026 Kurapati Arjun. Crafted with passion for world design.
           </p>
         </motion.div>
       </div>

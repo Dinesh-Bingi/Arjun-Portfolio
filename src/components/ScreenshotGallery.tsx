@@ -31,6 +31,13 @@ const ScreenshotGallery = ({
   const closeLightbox = () => {
     setIsLightboxOpen(false);
     setZoomLevel(1);
+    // Clean up data attribute after animation
+    setTimeout(() => {
+      const lightbox = document.querySelector('[data-lightbox-open="true"]');
+      if (lightbox) {
+        lightbox.removeAttribute('data-lightbox-open');
+      }
+    }, 200);
   };
   const zoomIn = () => {
     setZoomLevel(prev => Math.min(prev + 0.5, 3));
@@ -43,20 +50,37 @@ const ScreenshotGallery = ({
   useEffect(() => {
     if (!isLightboxOpen) return;
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") goToPrevious();
-      if (e.key === "ArrowRight") goToNext();
-      if (e.key === "+" || e.key === "=") zoomIn();
-      if (e.key === "-") zoomOut();
+      // Only handle if not already handled by parent modal
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        closeLightbox();
+      }
+      if (e.key === "ArrowLeft") {
+        e.stopPropagation();
+        goToPrevious();
+      }
+      if (e.key === "ArrowRight") {
+        e.stopPropagation();
+        goToNext();
+      }
+      if (e.key === "+" || e.key === "=") {
+        e.stopPropagation();
+        zoomIn();
+      }
+      if (e.key === "-") {
+        e.stopPropagation();
+        zoomOut();
+      }
     };
-    document.body.style.overflow = "hidden";
-    window.addEventListener("keydown", handleKeyDown);
+    // Don't modify body overflow - parent modal already handles it
+    window.addEventListener("keydown", handleKeyDown, true);
     return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown, true);
     };
   }, [isLightboxOpen]);
-  if (!images.length) return null;
+  // Show placeholder gallery even if images are empty strings (for future uploads)
+  const hasValidImages = images.some(img => img && img.trim() !== "");
+  if (!images.length && !hasValidImages) return null;
   return <>
       <div className="mt-6 flex flex-col items-center w-full">
         {/* Section Header */}
@@ -75,25 +99,43 @@ const ScreenshotGallery = ({
 
           {/* Image Container */}
           <div className="relative w-full max-w-3xl">
-            <div className="relative aspect-video bg-background-secondary rounded-xl overflow-hidden border border-border/50 cursor-pointer group shadow-lg" onClick={openLightbox}>
+            <div className={`relative aspect-video bg-background-secondary rounded-xl overflow-hidden border border-border/50 shadow-lg ${images[currentIndex] && images[currentIndex].trim() !== "" ? 'cursor-pointer group' : ''}`} onClick={images[currentIndex] && images[currentIndex].trim() !== "" ? openLightbox : undefined}>
               <AnimatePresence mode="wait">
-                <motion.img key={currentIndex} src={images[currentIndex]} alt={`Screenshot ${currentIndex + 1}`} className="w-full h-full object-cover" initial={{
-                opacity: 0
-              }} animate={{
-                opacity: 1
-              }} exit={{
-                opacity: 0
-              }} transition={{
-                duration: 0.2
-              }} />
+                {images[currentIndex] && images[currentIndex].trim() !== "" ? (
+                  <motion.img key={currentIndex} src={images[currentIndex]} alt={`Screenshot ${currentIndex + 1}`} className="w-full h-full object-cover" initial={{
+                    opacity: 0
+                  }} animate={{
+                    opacity: 1
+                  }} exit={{
+                    opacity: 0
+                  }} transition={{
+                    duration: 0.2
+                  }} />
+                ) : (
+                  <motion.div key={`placeholder-${currentIndex}`} className="w-full h-full flex items-center justify-center bg-muted/20" initial={{
+                    opacity: 0
+                  }} animate={{
+                    opacity: 1
+                  }} exit={{
+                    opacity: 0
+                  }} transition={{
+                    duration: 0.2
+                  }}>
+                    <p className="font-body text-sm text-muted-foreground text-center px-4">
+                      Screenshot Coming Soon
+                    </p>
+                  </motion.div>
+                )}
               </AnimatePresence>
 
-              {/* Fullscreen hint overlay */}
-              <div className="absolute inset-0 bg-background/0 group-hover:bg-background/20 transition-all duration-200 flex items-center justify-center">
-                <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-background/80 backdrop-blur-sm rounded-full p-3">
-                  <Maximize2 className="w-6 h-6 text-foreground" />
+              {/* Fullscreen hint overlay - only show if image exists */}
+              {images[currentIndex] && images[currentIndex].trim() !== "" && (
+                <div className="absolute inset-0 bg-background/0 group-hover:bg-background/20 transition-all duration-200 flex items-center justify-center">
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-background/80 backdrop-blur-sm rounded-full p-3">
+                    <Maximize2 className="w-6 h-6 text-foreground" />
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Image Counter */}
               <div className="absolute top-3 right-3 px-2.5 py-1 rounded-md bg-background/80 backdrop-blur-sm border border-border/50">
@@ -123,7 +165,13 @@ const ScreenshotGallery = ({
                     : "border-border/40 opacity-60 hover:opacity-100 hover:border-primary/50"
                 }`}
               >
-                <img src={image} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                {image && image.trim() !== "" ? (
+                  <img src={image} alt={`Thumbnail ${index + 1}`} className="w-full h-full object-cover" />
+                ) : (
+                  <div className="w-full h-full bg-muted/20 flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-muted-foreground/30" />
+                  </div>
+                )}
               </button>
             ))}
           </div>
@@ -132,15 +180,23 @@ const ScreenshotGallery = ({
 
       {/* Lightbox Modal */}
       <AnimatePresence>
-        {isLightboxOpen && <motion.div initial={{
-        opacity: 0
-      }} animate={{
-        opacity: 1
-      }} exit={{
-        opacity: 0
-      }} transition={{
-        duration: 0.2
-      }} className="fixed inset-0 z-50 flex items-center justify-center bg-background/95 backdrop-blur-md" onClick={closeLightbox}>
+        {isLightboxOpen && <motion.div 
+          data-lightbox-open="true"
+          initial={{
+            opacity: 0
+          }} 
+          animate={{
+            opacity: 1
+          }} 
+          exit={{
+            opacity: 0
+          }} 
+          transition={{
+            duration: 0.2
+          }} 
+          className="fixed inset-0 z-[90] flex items-center justify-center bg-background/95 backdrop-blur-md" 
+          onClick={closeLightbox}
+        >
             {/* Top Controls */}
             <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
               {/* Zoom Controls */}

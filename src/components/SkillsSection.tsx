@@ -1,8 +1,10 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, Suspense, lazy } from "react";
 import { Users, Gamepad2 } from "lucide-react";
-import ProjectModal from "./ProjectModal";
 import { getProjectsByCategory, Project, getIconComponent } from "@/data/projects";
+
+// Lazy load ProjectModal - only load when needed
+const ProjectModal = lazy(() => import("./ProjectModal"));
 
 const SkillsSection = () => {
   const ref = useRef(null);
@@ -91,7 +93,13 @@ const SkillsSection = () => {
                       <img 
                         src={project.thumbnailImage} 
                         alt={project.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        className="w-full h-full object-cover object-center"
+                        style={{
+                          imageRendering: 'auto',
+                          WebkitImageRendering: '-webkit-optimize-contrast',
+                          willChange: 'auto',
+                        }}
                       />
                     </div>
                   )}
@@ -132,10 +140,14 @@ const SkillsSection = () => {
       </div>
 
       {/* Project Modal */}
-      <ProjectModal
-        project={selectedProject}
-        onClose={() => setSelectedProject(null)}
-      />
+      {selectedProject && (
+        <Suspense fallback={null}>
+          <ProjectModal
+            project={selectedProject}
+            onClose={() => setSelectedProject(null)}
+          />
+        </Suspense>
+      )}
     </section>
   );
 };

@@ -52,5 +52,12 @@ export const forgottenValley: Project = {
         },
       ],
     },
+    
+    // Experience the Level CTA
+    {
+      type: "levelExperienceCTA",
+      url: "https://your-playable-build-link-here",
+      imageUrl: "/images/cta-reference.png",
+    },
   ],
 };

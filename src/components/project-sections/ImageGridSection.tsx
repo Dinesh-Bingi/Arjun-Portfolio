@@ -1,9 +1,65 @@
 import { ImageGridSection as ImageGridSectionType } from "@/data/projects/types";
 import HighlightedText from "./HighlightedText";
+import { useState } from "react";
 
 interface ImageGridSectionProps {
   section: ImageGridSectionType;
 }
+
+interface ImageItemProps {
+  image: {
+    src: string;
+    alt: string;
+    caption?: string;
+    link?: string;
+    linkText?: string;
+  };
+}
+
+const ImageItem = ({ image }: ImageItemProps) => {
+  const [imageError, setImageError] = useState(false);
+  const hasImage = image.src && image.src.trim() !== "" && !image.src.includes('placeholder');
+  
+  return (
+    <div className="flex flex-col items-center gap-3">
+      <div className="rounded-xl overflow-hidden border border-border/50 shadow-lg w-full aspect-square relative">
+        {hasImage && !imageError ? (
+          <img
+            src={image.src}
+            alt={image.alt || ""}
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div className="w-full h-full bg-muted/20 border-2 border-dashed border-border/50 flex items-center justify-center p-8">
+            {image.caption && (
+              <span className="font-heading text-sm text-muted-foreground text-center">
+                {image.caption}
+              </span>
+            )}
+          </div>
+        )}
+      </div>
+      {image.linkText && (
+        image.link ? (
+          <a
+            href={image.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-primary hover:text-primary/80 hover:underline transition-colors text-center focus:outline-none focus:ring-2 focus:ring-primary/40 focus:ring-offset-2 rounded"
+            aria-label={`View ${image.alt} Blueprint`}
+          >
+            {image.linkText}
+          </a>
+        ) : (
+          <span className="text-sm text-primary text-center">
+            {image.linkText}
+          </span>
+        )
+      )}
+    </div>
+  );
+};
 
 const ImageGridSection = ({ section }: ImageGridSectionProps) => {
   const columns = section.columns || 2;
@@ -39,18 +95,7 @@ const ImageGridSection = ({ section }: ImageGridSectionProps) => {
       
       <div className={`grid grid-cols-1 ${gridCols} gap-6 mt-8 max-w-2xl mx-auto`}>
         {section.images.map((image, index) => (
-          <div key={index} className="flex flex-col items-center gap-3">
-            <div className="rounded-xl overflow-hidden border border-border/50 shadow-lg">
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-auto object-cover transition-transform duration-300 hover:scale-110"
-              />
-            </div>
-            {image.caption && (
-              <span className="font-heading text-sm text-primary">{image.caption}</span>
-            )}
-          </div>
+          <ImageItem key={index} image={image} />
         ))}
       </div>
     </div>

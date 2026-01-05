@@ -18,6 +18,21 @@ const VideoSection = ({ section }: VideoSectionProps) => {
     }
   };
 
+  // Show placeholder if video URL is empty
+  if (!section.videoUrl || section.videoUrl.trim() === "") {
+    return (
+      <div className="mb-8 flex justify-center">
+        <div className="relative rounded-xl overflow-hidden border border-border/50 shadow-xl max-w-4xl w-full aspect-video bg-secondary/20 flex items-center justify-center">
+          <div className="text-center">
+            <p className="font-body text-sm text-muted-foreground">
+              Gameplay / Walkthrough Video (Coming Soon)
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="mb-8 flex justify-center">
       <div className="relative rounded-xl overflow-hidden border border-border/50 shadow-xl max-w-4xl w-full">
