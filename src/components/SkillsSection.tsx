@@ -97,7 +97,6 @@ const SkillsSection = () => {
                         className="w-full h-full object-cover object-center"
                         style={{
                           imageRendering: 'auto',
-                          WebkitImageRendering: '-webkit-optimize-contrast',
                           willChange: 'auto',
                         }}
                       />
