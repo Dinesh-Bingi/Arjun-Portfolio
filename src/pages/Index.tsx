@@ -54,7 +54,7 @@ const Index = () => {
         {/* Main content */}
         <main className="pt-16">
           <div id="home">
-            <HeroSection />
+            <HeroSection isLoading={isLoading} />
           </div>
           
           <HomeSkillsSection />

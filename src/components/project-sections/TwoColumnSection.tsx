@@ -92,32 +92,32 @@ const TwoColumnSection = ({ section }: TwoColumnSectionProps) => {
               </div>
             ) : (
               // Other projects: Original layout
-              <div className="flex justify-center gap-12 pt-4">
-                {right.pillars.map((pillar, index) => {
-                  const Icon = iconMap[pillar.icon];
-                  return (
-                    <div key={index} className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
-                        {Icon && <Icon className="w-8 h-8 text-primary" />}
-                      </div>
-                      <span className="font-heading text-sm text-foreground">{pillar.label}</span>
+            <div className="flex justify-center gap-12 pt-4">
+              {right.pillars.map((pillar, index) => {
+                const Icon = iconMap[pillar.icon];
+                return (
+                  <div key={index} className="flex flex-col items-center gap-3">
+                    <div className="w-16 h-16 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center">
+                      {Icon && <Icon className="w-8 h-8 text-primary" />}
                     </div>
-                  );
-                })}
-              </div>
+                    <span className="font-heading text-sm text-foreground">{pillar.label}</span>
+                  </div>
+                );
+              })}
+            </div>
             )}
             {right.documentLink && right.documentLink.text && (
               <div className="flex justify-center mt-8">
                 {right.documentLink.url ? (
-                  <a
-                    href={right.documentLink.url}
+                <a
+                  href={right.documentLink.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-6 py-3 font-heading text-sm text-foreground bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 hover:border-primary/50 transition-all duration-300 flex items-center gap-2"
-                  >
-                    {right.documentLink.text}
-                    <span className="text-primary">→</span>
-                  </a>
+                  className="px-6 py-3 font-heading text-sm text-foreground bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 hover:border-primary/50 transition-all duration-300 flex items-center gap-2"
+                >
+                  {right.documentLink.text}
+                  <span className="text-primary">→</span>
+                </a>
                 ) : (
                   <span className="px-6 py-3 font-heading text-sm text-muted-foreground bg-primary/10 border border-primary/30 rounded-lg flex items-center gap-2">
                     {right.documentLink.text}

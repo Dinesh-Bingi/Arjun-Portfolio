@@ -3,7 +3,6 @@
 
 import { Project } from "./types";
 import { theLightRemains } from "./the-light-remains";
-import { forgottenValley } from "./forgotten-valley";
 import { metroDescent } from "./metro-descent";
 import { sabershotJackOfAllBlades } from "./sabershot-jack-of-all-blades";
 import { justMyDuck } from "./just-my-duck";
@@ -13,7 +12,6 @@ import { puddleWhispers } from "./puddle-whispers";
 // Export all projects
 export const projects: Project[] = [
   theLightRemains,
-  forgottenValley,
   metroDescent,
   sabershotJackOfAllBlades,
   puddleWhispers,

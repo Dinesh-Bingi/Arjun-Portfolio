@@ -34,7 +34,7 @@ const TextSection = ({ section }: TextSectionProps) => {
           {/* Image - same constraint as second paragraph */}
           <div className="mx-auto max-w-[720px] mt-6">
             <img 
-              src="/images/projects/sabershot/level-streaming.jpg" 
+              src="/images/level-streaming-overview.jpg" 
               alt="Level streaming setup and implementation"
               className="w-full h-auto rounded-lg"
             />

@@ -161,11 +161,11 @@ export const sabershotJackOfAllBlades: Project = {
       title: "Level Streaming",
       paragraphs: [
         {
-          text: "I worked on setting up level streaming to support the scale of the map and its branching structure. The level was divided into smaller sections based on player progression, allowing areas to load and unload smoothly as the player moved through the world.",
-          highlights: ["level streaming", "scale of the map", "branching structure", "player progression"],
+          text: "I implemented level streaming to support the large-scale map and its branching structure. The level was divided into logical sections based on player progression, enabling seamless loading and unloading as players moved through the world.",
+          highlights: ["level streaming", "large-scale map", "branching structure", "player progression"],
         },
         {
-          text: "Streaming volumes and logical splits were planned around corridors, turns, and transition spaces to hide loading and maintain immersion. This approach helped manage performance while keeping the experience seamless, even with long sightlines and multiple connected paths.",
+          text: "Streaming volumes and logical splits were strategically placed around corridors, turns, and transition spaces to hide loading operations and maintain immersion. This approach optimized performance while preserving a seamless experience across extended sightlines and multiple interconnected paths.",
           highlights: ["Streaming volumes", "corridors", "turns", "transition spaces", "immersion", "performance", "seamless"],
         },
       ],

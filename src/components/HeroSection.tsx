@@ -2,7 +2,11 @@ import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 
-const HeroSection = () => {
+interface HeroSectionProps {
+  isLoading: boolean;
+}
+
+const HeroSection = ({ isLoading }: HeroSectionProps) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isMounted, setIsMounted] = useState(false);
   const dimensionsRef = useRef({ width: 1, height: 1 });
@@ -60,10 +64,25 @@ const HeroSection = () => {
     };
   }, []);
 
+  // Control video playback based on loading state
+  useEffect(() => {
+    if (videoRef.current) {
+      if (isLoading) {
+        // Pause video while loading screen is visible
+        videoRef.current.pause();
+      } else {
+        // Start video playback when loading completes
+        videoRef.current.play().catch(() => {
+          // Ignore autoplay errors
+        });
+      }
+    }
+  }, [isLoading]);
+
   // Handle video pause when tab is inactive
   useEffect(() => {
     const handleVisibilityChange = () => {
-      if (videoRef.current) {
+      if (videoRef.current && !isLoading) {
         if (document.hidden) {
           videoRef.current.pause();
         } else {
@@ -76,7 +95,7 @@ const HeroSection = () => {
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
-  }, []);
+  }, [isLoading]);
 
   // Delay animations until after first paint
   useEffect(() => {
@@ -93,11 +112,10 @@ const HeroSection = () => {
       <div className="relative w-full aspect-[21/9] overflow-hidden">
         <video
           ref={videoRef}
-          autoPlay
           loop
           muted
           playsInline
-          preload="metadata"
+          preload="none"
           className="absolute inset-0 w-full h-full object-cover z-0"
         >
           <source src="/videos/hero-background.mp4" type="video/mp4" />

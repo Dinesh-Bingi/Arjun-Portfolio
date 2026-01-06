@@ -1,5 +1,4 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 import { useEffect } from "react";
 import ProjectNavigation from "./ProjectNavigation";
 import { SectionRenderer } from "./project-sections";
@@ -67,15 +66,6 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
           >
             {/* Project Navigation */}
             <ProjectNavigation onClose={onClose} />
-
-            {/* Close button */}
-            <button
-              onClick={onClose}
-              className="fixed top-4 right-4 z-[110] p-2 rounded-lg bg-background/80 backdrop-blur-sm border border-border/50 text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all duration-200"
-              aria-label="Close project details"
-            >
-              <X className="w-5 h-5" />
-            </button>
 
             {/* Hero Cover Section - Only for Echoes of Stella */}
             {isEchoesOfStella && project.coverImage && (
