@@ -30,7 +30,7 @@ const navLinks: ProjectNavLink[] = [{
   href: "#about"
 }, {
   label: "Resume",
-  href: "/Arjun_CV.pdf",
+  href: "/Arjun_Resume.pdf",
   isExternal: true
 }, {
   label: "Contact",
@@ -85,11 +85,27 @@ const ProjectNavigation = ({
           {/* Desktop Navigation */}
           <div className="hidden items-center justify-center gap-8 md:flex md:items-start md:justify-end">
             {navLinks.map(link => <div key={link.label} className="relative" onMouseEnter={() => link.hasDropdown && setActiveDropdown(link.label)} onMouseLeave={() => setActiveDropdown(null)}>
-                <button onClick={() => !link.hasDropdown && handleNavClick(link)} className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1">
-                  {link.label}
-                  {link.hasDropdown && <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.label ? 'rotate-180' : ''}`} />}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-foreground group-hover:w-full transition-all duration-300" />
-                </button>
+                {link.label === "Resume" ? (
+                  <a
+                    href="/Arjun_Resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.open('/Arjun_Resume.pdf', '_blank', 'noopener,noreferrer');
+                    }}
+                    className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1"
+                  >
+                    {link.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-foreground group-hover:w-full transition-all duration-300" />
+                  </a>
+                ) : (
+                  <button onClick={() => !link.hasDropdown && handleNavClick(link)} className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1">
+                    {link.label}
+                    {link.hasDropdown && <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.label ? 'rotate-180' : ''}`} />}
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-foreground group-hover:w-full transition-all duration-300" />
+                  </button>
+                )}
 
                 {/* Dropdown menu */}
                 {link.hasDropdown && link.category && <AnimatePresence>
@@ -142,9 +158,24 @@ const ProjectNavigation = ({
           }} transition={{
             delay: 0.1 + index * 0.05
           }}>
-                  <button onClick={() => handleNavClick(link)} className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300">
-                    {link.label}
-                  </button>
+                  {link.label === "Resume" ? (
+                    <a
+                      href="/Arjun_Resume.pdf"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.open('/Arjun_Resume.pdf', '_blank', 'noopener,noreferrer');
+                      }}
+                      className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300"
+                    >
+                      {link.label}
+                    </a>
+                  ) : (
+                    <button onClick={() => handleNavClick(link)} className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300">
+                      {link.label}
+                    </button>
+                  )}
                   
                   {/* Mobile dropdown items */}
                   {link.hasDropdown && link.category && getDropdownProjects(link.category).length > 0 && <div className="mt-2 space-y-2">

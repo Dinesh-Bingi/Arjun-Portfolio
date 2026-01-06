@@ -24,13 +24,15 @@ const LevelLayoutSection = ({ section }: LevelLayoutSectionProps) => {
         </div>
       )}
       
-      <div className="mt-8 flex justify-center">
-        <img
-          src={section.mapImage}
-          alt="Level Layout Map"
-          className="w-full max-w-4xl h-auto object-contain"
-        />
-      </div>
+      {section.mapImage && (
+        <div className="mt-8 flex justify-center">
+          <img
+            src={section.mapImage}
+            alt="Level Layout Map"
+            className="w-full max-w-4xl h-auto object-contain rounded-lg"
+          />
+        </div>
+      )}
     </div>
   );
 };

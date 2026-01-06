@@ -192,7 +192,7 @@ export const sabershotJackOfAllBlades: Project = {
           highlights: ["exploration", "combat spaces", "transition areas", "pacing", "player engagement", "readable", "intuitive"],
         },
       ],
-      mapImage: "",
+      mapImage: "/images/sabershot-level-layout-map.png",
     },
     
     // Design Techniques
@@ -208,6 +208,11 @@ export const sabershotJackOfAllBlades: Project = {
               highlights: ["open and readable", "gradually compresses", "narrow corridor", "archway", "reduces visibility", "increases focus", "builds tension"],
             },
           ],
+          media: {
+            type: "image",
+            src: "/images/design-technique-release-compression.png",
+            placeholder: "Release & Compression design technique",
+          },
         },
         {
           title: "Branch Endpoint",
@@ -217,21 +222,62 @@ export const sabershotJackOfAllBlades: Project = {
               highlights: ["rooftop", "branching path", "routes reconnect", "re-orient", "without confusion"],
             },
           ],
+          media: {
+            type: "image",
+            src: "/images/design-technique-branch-endpoint.png",
+            placeholder: "Branch Endpoint design technique",
+          },
         },
+      ],
+    },
+    
+    // Pacing & Tension Graph
+    {
+      type: "graph",
+      title: "Pacing & Tension",
+      imageUrl: "/images/sabershot-pacing-tension-graph.png",
+    },
+    
+    // Level Beats & Walkthrough
+    {
+      type: "levelBeats",
+      title: "Level Beats & Walkthrough",
+      phases: [
         {
-          title: "",
-          paragraphs: [],
-          images: [
-            {
-              src: "/images/projects/sabershot/design-techniques-01.jpg",
-              placeholder: "Release & Compression design technique",
-            },
-            {
-              src: "/images/projects/sabershot/design-techniques-02.jpg",
-              placeholder: "Branch Endpoint design technique",
-            },
+          name: "Act 1 – Entry into the Cursed City",
+          beats: [
+            { number: 1, label: "Player Arrival – Fog-covered streets" },
+            { number: 2, label: "Market Ambush – First major combat" },
+            { number: 3, label: "Cult Signs – Environmental hints" },
           ],
         },
+        {
+          name: "Act 2 – Up and Down Tension",
+          beats: [
+            { number: 4, label: "Open Exploration – Branching paths" },
+            { number: 5, label: "Combat Escalation – Tighter and pressure" },
+            { number: 6, label: "Transition Space – Rooftops or sewers" },
+          ],
+        },
+        {
+          name: "Act 3 – Truth & Consequence",
+          beats: [
+            { number: 7, label: "Point of No Return – into cult territory" },
+            { number: 8, label: "Final Approach – combat buildup" },
+            { number: 9, label: "Ritual Chamber – Boss fight climax" },
+          ],
+        },
+      ],
+      images: [
+        "/images/sabershot-level-beat-01.jpg",
+        "/images/sabershot-level-beat-02.jpg",
+        "/images/sabershot-level-beat-03.jpg",
+        "/images/sabershot-level-beat-04.jpg",
+        "/images/sabershot-level-beat-05.jpg",
+        "/images/sabershot-level-beat-06.jpg",
+        "/images/sabershot-level-beat-07.jpg",
+        "/images/sabershot-level-beat-08.jpg",
+        "/images/sabershot-level-beat-09.jpg",
       ],
     },
     

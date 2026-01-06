@@ -13,18 +13,28 @@ interface LevelBeatCardProps {
 const LevelBeatCard = ({ image, altText, index }: LevelBeatCardProps) => {
   return (
     <div
-      className="relative rounded-lg overflow-hidden border border-border/30"
+      className="relative rounded-lg"
+      style={{
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.45)',
+      }}
     >
       {/* Image container */}
-      <div className="relative aspect-video overflow-hidden bg-secondary/20">
+      <div className="relative bg-secondary/20 p-0">
         <img
           src={image}
           alt={altText}
-          className="w-full h-full object-cover"
+          className="rounded-lg"
+          style={{
+            display: 'block',
+            width: '100%',
+            height: 'auto',
+            objectFit: 'contain',
+            margin: 0,
+            padding: 0,
+            lineHeight: 0,
+          }}
         />
-        
-        {/* Subtle dark gradient overlay at bottom */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background/20 via-transparent to-transparent pointer-events-none" />
       </div>
     </div>
   );
@@ -42,7 +52,7 @@ const LevelBeatsSection = ({ section }: LevelBeatsSectionProps) => {
         </h3>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
         {/* Phases Column */}
         <div className="space-y-4">
           {section.phases.map((phase, phaseIndex) => (
@@ -62,7 +72,7 @@ const LevelBeatsSection = ({ section }: LevelBeatsSectionProps) => {
         </div>
         
         {/* Images Grid */}
-        <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="lg:col-span-4 grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
           {section.images.map((image, index) => {
             const beat = allBeats[index];
             const altText = beat 

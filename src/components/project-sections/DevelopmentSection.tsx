@@ -43,6 +43,13 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
     section.subsections.length === 2 &&
     section.subsections.some(sub => sub.title === "Pacing Through Space") &&
     section.subsections.some(sub => sub.title === "Natural Player Guidance");
+  
+  // Special handling for Sabershot Design Techniques (2-column layout per technique)
+  const isSabershotDesignTechniques = 
+    section.title === "Design Techniques" &&
+    section.subsections.length === 2 &&
+    section.subsections.some(sub => sub.title === "Release & Compression") &&
+    section.subsections.some(sub => sub.title === "Branch Endpoint");
 
   return (
     <div className={`${isPuddleWhispersDesignTechniques ? 'mt-8 mb-6' : 'mt-12 mb-8'} ${(isJustMyDuckPreProduction || isJustMyDuckPostMortem) ? 'max-w-[1000px] mx-auto' : ''}`}>
@@ -189,6 +196,53 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
                   </p>
                 ))}
               </div>
+            </div>
+          ))}
+        </div>
+      ) : isSabershotDesignTechniques ? (
+        // Special 2-column layout for Sabershot Design Techniques (each technique as a row)
+        <div className="space-y-10">
+          {section.subsections.map((subsection, index) => (
+            <div key={index} className="grid grid-cols-1 lg:grid-cols-2 items-center gap-10 lg:gap-16 xl:gap-20">
+              {/* Left: Title + Text */}
+              <div className="space-y-4 max-w-prose">
+                {subsection.title && (
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-1 h-8 bg-primary rounded-full"></div>
+                    <h4 className="font-display text-base font-semibold text-foreground italic">
+                      {subsection.title}
+                    </h4>
+                  </div>
+                )}
+                <div className="space-y-3 font-body text-muted-foreground leading-relaxed">
+                  {subsection.paragraphs.map((p, pIndex) => (
+                    <p key={pIndex}>
+                      <HighlightedText text={p.text} highlights={p.highlights} />
+                    </p>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Right: Image */}
+              {subsection.media && subsection.media.type === "image" && (
+                <div className="flex items-center justify-center lg:justify-start">
+                  <div className="w-full max-w-lg overflow-hidden rounded-lg">
+                    {subsection.media.src ? (
+                      <img
+                        src={subsection.media.src}
+                        alt={subsection.media.placeholder || subsection.title || "Design technique"}
+                        className="w-full h-auto object-cover"
+                      />
+                    ) : (
+                      <div className="w-full h-64 bg-muted/30 rounded-lg flex items-center justify-center">
+                        <p className="text-muted-foreground text-sm text-center px-4">
+                          {subsection.media.placeholder || "Image placeholder"}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>

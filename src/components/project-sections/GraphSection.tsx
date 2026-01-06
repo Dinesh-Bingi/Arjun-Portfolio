@@ -16,7 +16,7 @@ const GraphSection = ({ section }: GraphSectionProps) => {
         <img
           src={section.imageUrl}
           alt={section.title}
-          className="w-full max-w-5xl h-auto object-contain"
+          className="w-full max-w-5xl h-auto object-contain rounded-lg"
         />
       </div>
     </div>

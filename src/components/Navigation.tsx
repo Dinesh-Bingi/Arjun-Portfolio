@@ -17,7 +17,7 @@ const navLinks: NavLink[] = [
   { label: "Group Projects", href: "#group-projects", hasDropdown: true, category: "group" },
   { label: "Professional Work", href: "#professional-work" },
   { label: "About", href: "#about" },
-  { label: "Resume", href: "/Arjun_CV.pdf", isExternal: true },
+  { label: "Resume", href: "/Arjun_Resume.pdf", isExternal: true },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -103,19 +103,38 @@ const Navigation = () => {
                 onMouseEnter={() => link.hasDropdown && setActiveDropdown(link.label)}
                 onMouseLeave={() => setActiveDropdown(null)}
               >
-                <motion.button
-                  onClick={() => handleNavClick(link)}
-                  className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.6 + index * 0.05 }}
-                >
-                  {link.label}
-                  {link.hasDropdown && (
-                    <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.label ? 'rotate-180' : ''}`} />
-                  )}
-                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
-                </motion.button>
+                {link.label === "Resume" ? (
+                  <motion.a
+                    href="/Arjun_Resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      window.open('/Arjun_Resume.pdf', '_blank', 'noopener,noreferrer');
+                    }}
+                    className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 + index * 0.05 }}
+                  >
+                    {link.label}
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
+                  </motion.a>
+                ) : (
+                  <motion.button
+                    onClick={() => handleNavClick(link)}
+                    className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1"
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.6 + index * 0.05 }}
+                  >
+                    {link.label}
+                    {link.hasDropdown && (
+                      <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.label ? 'rotate-180' : ''}`} />
+                    )}
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
+                  </motion.button>
+                )}
 
                 {/* Dropdown menu */}
                 {link.hasDropdown && link.category && (
@@ -167,23 +186,49 @@ const Navigation = () => {
         <div className="relative flex flex-col items-center justify-center h-full gap-6 overflow-y-auto py-20">
           {navLinks.map((link, index) => (
             <div key={link.label} className="text-center">
-              <motion.button
-                onClick={() => !link.hasDropdown && handleNavClick(link)}
-                className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300"
-                variants={{
-                  open: { 
-                    opacity: 1, 
-                    y: 0,
-                    transition: { delay: 0.1 + index * 0.05 }
-                  },
-                  closed: { 
-                    opacity: 0, 
-                    y: 20 
-                  },
-                }}
-              >
-                {link.label}
-              </motion.button>
+              {link.label === "Resume" ? (
+                <motion.a
+                  href="/Arjun_Resume.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    window.open('/Arjun_Resume.pdf', '_blank', 'noopener,noreferrer');
+                  }}
+                  className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300"
+                  variants={{
+                    open: { 
+                      opacity: 1, 
+                      y: 0,
+                      transition: { delay: 0.1 + index * 0.05 }
+                    },
+                    closed: { 
+                      opacity: 0, 
+                      y: 20 
+                    },
+                  }}
+                >
+                  {link.label}
+                </motion.a>
+              ) : (
+                <motion.button
+                  onClick={() => !link.hasDropdown && handleNavClick(link)}
+                  className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300"
+                  variants={{
+                    open: { 
+                      opacity: 1, 
+                      y: 0,
+                      transition: { delay: 0.1 + index * 0.05 }
+                    },
+                    closed: { 
+                      opacity: 0, 
+                      y: 20 
+                    },
+                  }}
+                >
+                  {link.label}
+                </motion.button>
+              )}
               
               {/* Mobile dropdown items */}
               {link.hasDropdown && link.category && (
