@@ -12,6 +12,12 @@ const HomeSkillsSection = () => {
       image: "/images/level-design.png",
       alt: "Level Design logo",
     },
+    {
+      title: "Art & Visual Design",
+      description: "Strong foundation in 3D modeling, texturing, and visual composition, supporting clear readability and believable game environments.",
+      image: "/images/art-design.png",
+      alt: "Art & Visual Design logo",
+    },
   ];
 
   return (
@@ -39,7 +45,7 @@ const HomeSkillsSection = () => {
         }
       `}</style>
       <div className="max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 items-start">
           {skills.map((skill, index) => {
             return (
               <div

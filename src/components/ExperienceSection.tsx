@@ -3,32 +3,25 @@ import { useRef } from "react";
 
 const experiences = [
   {
-    period: "2023 – Present",
-    title: "Senior Level Designer",
-    company: "Future Games",
+    period: "2024 – Present",
+    title: "Game Design Student (Systems Design Specialization)",
+    company: "Futuregames",
     location: "Warsaw, Poland",
-    description: "Leading level design for an unannounced AAA title. Responsible for player flow, environmental storytelling, and cross-team collaboration.",
+    description: "Studying game design with a focus on systems design, technical level design, and gameplay logic. Actively developing solo and team-based projects using Unreal Engine, with emphasis on player flow, mechanics design, and interactive systems.",
   },
   {
-    period: "2021 – 2023",
-    title: "Level Designer",
-    company: "Neon Studios",
-    location: "Berlin, Germany",
-    description: "Designed and iterated on multiplayer maps for a competitive shooter. Focused on balance, sight lines, and player engagement metrics.",
+    period: "2023 – 2024",
+    title: "3D Artist",
+    company: "Polycrab",
+    location: "India",
+    description: "Created and delivered detailed, optimized 3D product assets for visualization projects. Worked across modeling, texturing, and asset optimization while meeting production deadlines and maintaining visual consistency.",
   },
   {
-    period: "2019 – 2021",
-    title: "Junior Level Designer",
-    company: "Indie Collective",
-    location: "Remote",
-    description: "Contributed to multiple indie projects, specializing in puzzle design and atmospheric horror environments.",
-  },
-  {
-    period: "2018 – 2019",
-    title: "QA & Level Design Intern",
-    company: "GameStart Academy",
-    location: "Mumbai, India",
-    description: "Learned industry pipelines while contributing to educational game projects and documentation.",
+    period: "2020 – 2023",
+    title: "B.A. (Honours) Visual Arts – Animation & Visual Effects",
+    company: "Creative Multimedia College of Fine Arts",
+    location: "Hyderabad, India",
+    description: "Built a strong foundation in 3D art, animation, and visual storytelling. Developed skills in composition, lighting, and asset creation, which later informed my transition into level design and game development. (Affiliated with Jawaharlal Nehru Architecture and Fine Arts University)",
   },
 ];
 

@@ -6,13 +6,6 @@ const AboutSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
-  const philosophyPoints = [
-    "Crafting environments that tell stories without words",
-    "Building spaces that guide through intuition, not instruction",
-    "Creating moments of wonder through deliberate pacing",
-    "Designing worlds that players want to explore, not escape",
-  ];
-
   return (
     <section className="relative py-20 px-6" ref={ref}>
       <div className="max-w-4xl mx-auto">
@@ -35,7 +28,7 @@ const AboutSection = () => {
         </motion.div>
 
         {/* Content with image */}
-        <div className="grid md:grid-cols-[300px_1fr] gap-12 items-start">
+        <div className="grid md:grid-cols-[300px_1fr] gap-12 items-start md:items-center">
           {/* Profile Image */}
           <motion.div
             className="relative"
@@ -57,33 +50,25 @@ const AboutSection = () => {
 
           {/* Philosophy content */}
           <div className="space-y-8">
-            <motion.p
-              className="font-body text-lg md:text-xl text-muted-foreground leading-relaxed"
+            <motion.div
+              className="font-body text-lg md:text-xl text-muted-foreground leading-relaxed space-y-4"
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              Every level is a narrative. Every corner holds potential. I believe in creating 
-              environments that breathe—spaces that invite exploration and reward curiosity 
-              with meaningful discoveries.
-            </motion.p>
-
-            <div className="grid gap-4 mt-8">
-              {philosophyPoints.map((point, index) => (
-                <motion.div
-                  key={index}
-                  className="flex items-center gap-4 group"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-                >
-                  <div className="w-2 h-2 rounded-full bg-primary/50 group-hover:bg-primary group-hover:shadow-[0_0_10px_hsla(262,83%,58%,0.5)] transition-all duration-300" />
-                  <p className="font-body text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                    {point}
-                  </p>
-                </motion.div>
-              ))}
-            </div>
+              <p>
+                Greetings!
+              </p>
+              <p>
+                My name is Arjun, a Game Design student currently based in Warsaw, Poland, with a strong interest in Technical Level Design.
+              </p>
+              <p>
+                I began my journey in game-related fields in 2020, starting with a background in visual arts, animation, and 3D art. Over time, this foundation evolved into a strong focus on level design, where I apply my understanding of space, scale, and visual composition to create clear and engaging gameplay environments.
+              </p>
+              <p>
+                I am currently studying Game Design at Futuregames, specializing in Systems Design, while actively working on solo and team-based projects that focus on level blockouts, player flow, interaction design, and technical implementation using Unreal Engine.
+              </p>
+            </motion.div>
           </div>
         </div>
 
