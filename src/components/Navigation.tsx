@@ -15,7 +15,7 @@ const navLinks: NavLink[] = [
   { label: "Home", href: "#home" },
   { label: "Personal Projects", href: "#personal-projects", hasDropdown: true, category: "personal" },
   { label: "Group Projects", href: "#group-projects", hasDropdown: true, category: "group" },
-  { label: "Professional Work", href: "#professional-work" },
+  { label: "My Journey", href: "#professional-work" },
   { label: "About", href: "#about" },
   { label: "Resume", href: "/Arjun_Resume.pdf", isExternal: true },
   { label: "Contact", href: "#contact" },
