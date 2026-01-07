@@ -8,9 +8,12 @@ interface TextSectionProps {
 const TextSection = ({ section }: TextSectionProps) => {
   // Special layout for Level Streaming section
   const isLevelStreaming = section.title === "Level Streaming" && section.paragraphs.length >= 2;
+  
+  // Special padding for Key Contribution section (Sushi 2 Go)
+  const isKeyContribution = section.title === "Key Contribution";
 
   return (
-    <div className="mt-12 mb-8">
+    <div className={`mt-12 ${isKeyContribution ? 'mb-12' : 'mb-8'}`}>
       <div className="bg-primary/60 rounded-md px-4 py-3 mb-6">
         <h3 className="font-display text-lg font-semibold text-foreground text-center">
           {section.title}

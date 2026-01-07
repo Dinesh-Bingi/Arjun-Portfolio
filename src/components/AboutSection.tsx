@@ -16,14 +16,8 @@ const AboutSection = () => {
           animate={isInView ? { opacity: 1, x: 0 } : {}}
           transition={{ duration: 0.8 }}
         >
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-px bg-primary" />
-            <span className="font-heading text-sm tracking-[0.2em] text-primary uppercase">
-              Philosophy
-            </span>
-          </div>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-gradient">
-            Design Approach
+            Greetings!
           </h2>
         </motion.div>
 
@@ -56,9 +50,6 @@ const AboutSection = () => {
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.3 }}
             >
-              <p>
-                Greetings!
-              </p>
               <p>
                 My name is Arjun, a Game Design student currently based in Warsaw, Poland, with a strong interest in Technical Level Design.
               </p>

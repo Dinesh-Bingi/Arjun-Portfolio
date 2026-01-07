@@ -21,7 +21,7 @@ export const sushi2Go: Project = {
       muted: true,
     },
     
-    // Two Column: Overview + Focus Areas
+    // Two Column: Project Breakdown + Key Contribution
     {
       type: "twoColumn",
       left: {
@@ -42,8 +42,13 @@ export const sushi2Go: Project = {
         ],
       },
       right: {
-        title: "Focus Areas",
-        bulletPoints: [],
+        title: "Key Contribution",
+        paragraphs: [
+          {
+            text: "• VFX Design (Minor Contribution): Implemented subtle screen-edge speed line effects to enhance the sense of movement and speed, providing clear visual feedback as the conveyor belt accelerates.",
+            highlights: ["VFX Design", "Minor Contribution", "screen-edge speed line effects", "sense of movement", "speed", "visual feedback", "conveyor belt accelerates"],
+          },
+        ],
       },
     },
     
@@ -64,18 +69,6 @@ export const sushi2Go: Project = {
       type: "imageGrid",
       images: [],
       columns: 2,
-    },
-    
-    // Key Contribution Section
-    {
-      type: "text",
-      title: "Key Contribution",
-      paragraphs: [
-        {
-          text: "• VFX Design (Minor Contribution): Implemented subtle screen-edge speed line effects to enhance the sense of movement and speed, providing clear visual feedback as the conveyor belt accelerates.",
-          highlights: ["VFX Design", "Minor Contribution", "screen-edge speed line effects", "sense of movement", "speed", "visual feedback", "conveyor belt accelerates"],
-        },
-      ],
     },
     
     // Team Collaboration Section
@@ -101,7 +94,7 @@ export const sushi2Go: Project = {
     // Experience the Level CTA
     {
       type: "levelExperienceCTA",
-      url: "https://your-playable-build-link-here",
+      url: "https://drive.google.com/file/d/17GgqfohRgyak-b7Z2gkb9qG6FCf8hqhW/view",
       imageUrl: "/images/cta-reference.png",
     },
     

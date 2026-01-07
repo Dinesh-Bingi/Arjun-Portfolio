@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { Mail, Linkedin, Youtube, Palette } from "lucide-react";
 
 const socialLinks = [
-  { icon: <Mail className="w-5 h-5" />, label: "Email", href: "mailto:your@email.com" },
+  { icon: <Mail className="w-5 h-5" />, label: "Email", href: "https://mail.google.com/mail/?view=cm&fs=1&to=Arjunreigns459@gmail.com" },
   { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", href: "https://www.linkedin.com/in/arjun-kurapati-469711277" },
   { icon: <Palette className="w-5 h-5" />, label: "ArtStation", href: "https://arjunkurapati.artstation.com/" },
   { icon: <Youtube className="w-5 h-5" />, label: "YouTube", href: "https://www.youtube.com/@ArjunKurapati" },
@@ -61,8 +61,8 @@ const ContactSection = () => {
               <motion.a
                 key={link.label}
                 href={link.href}
-                target={link.label === "Email" ? undefined : "_blank"}
-                rel={link.label === "Email" ? undefined : "noopener noreferrer"}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group relative p-4 rounded-xl bg-secondary/50 backdrop-blur-sm border border-primary/20 hover:border-primary/40 hover:bg-primary/10 transition-all duration-300"
                 whileHover={{ scale: 1.05, y: -2, boxShadow: "0 10px 30px -10px hsla(262, 83%, 58%, 0.3)" }}
                 whileTap={{ scale: 0.98 }}

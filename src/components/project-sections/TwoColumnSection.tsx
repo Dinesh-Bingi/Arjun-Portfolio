@@ -76,19 +76,26 @@ const TwoColumnSection = ({ section }: TwoColumnSectionProps) => {
           <>
             {/* Check if this is Puddle Whispers Design Pillars (has "Reflection Through Interaction") */}
             {right.pillars.some(p => p.label === "Reflection Through Interaction") ? (
-              // Puddle Whispers: Improved alignment with grid layout
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pt-4">
-                {right.pillars.map((pillar, index) => {
-                  const Icon = iconMap[pillar.icon];
-                  return (
-                    <div key={index} className="flex flex-col items-center gap-3">
-                      <div className="w-16 h-16 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center flex-shrink-0">
-                        {Icon && <Icon className="w-8 h-8 text-primary" />}
+              // Puddle Whispers: Centered, balanced layout with equal card sizes
+              <div className="flex justify-center pt-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 w-full max-w-2xl">
+                  {right.pillars.map((pillar, index) => {
+                    const Icon = iconMap[pillar.icon];
+                    return (
+                      <div 
+                        key={index} 
+                        className="flex flex-col items-center justify-center gap-3 min-h-[120px] w-full"
+                      >
+                        <div className="w-16 h-16 rounded-lg bg-primary/10 border border-primary/30 flex items-center justify-center flex-shrink-0">
+                          {Icon && <Icon className="w-8 h-8 text-primary" />}
+                        </div>
+                        <span className="font-heading text-sm text-foreground text-center leading-tight min-h-[2.5rem] flex items-center justify-center">
+                          {pillar.label}
+                        </span>
                       </div>
-                      <span className="font-heading text-sm text-foreground text-center leading-tight">{pillar.label}</span>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
+                </div>
               </div>
             ) : (
               // Other projects: Original layout
