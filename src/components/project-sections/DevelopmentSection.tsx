@@ -1,11 +1,123 @@
 import { DevelopmentSection as DevelopmentSectionType } from "@/data/projects/types";
 import HighlightedText from "./HighlightedText";
 import { registerVideo, unregisterVideo } from "@/utils/videoManager";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface DevelopmentSectionProps {
   section: DevelopmentSectionType;
 }
+
+// Sabershot Production & Process Video Component with lazy loading
+const SabershotProductionVideo = ({ 
+  src, 
+  fallbackImage, 
+  placeholder 
+}: { 
+  src: string; 
+  fallbackImage?: string; 
+  placeholder?: string;
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [hasError, setHasError] = useState(false);
+
+  // Lazy load video when it becomes visible
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: "50px" }
+    );
+
+    observer.observe(containerRef.current);
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Register video for single-play management
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isVisible) return;
+
+    const handlePlay = () => {
+      registerVideo(video);
+    };
+
+    video.addEventListener("play", handlePlay);
+
+    return () => {
+      video.removeEventListener("play", handlePlay);
+      unregisterVideo(video);
+    };
+  }, [isVisible]);
+
+  return (
+    <div 
+      ref={containerRef}
+      className="overflow-hidden sabershot-production-video"
+      style={{
+        borderRadius: '14px',
+        border: '1px solid rgba(168, 85, 247, 0.25)',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      {isVisible && !hasError ? (
+        <video
+          ref={videoRef}
+          src={src}
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
+          className="w-full h-full object-cover"
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+            pointerEvents: 'none',
+          }}
+          onPlay={(e) => registerVideo(e.currentTarget)}
+          onLoadedData={(e) => registerVideo(e.currentTarget)}
+          onError={() => {
+            setHasError(true);
+          }}
+          aria-label={placeholder || "Production process video"}
+        />
+      ) : hasError && fallbackImage ? (
+        <img
+          src={fallbackImage}
+          alt={placeholder || "Production process"}
+          className="w-full h-full object-cover"
+          style={{
+            display: 'block',
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
+        />
+      ) : (
+        <div className="w-full h-full bg-muted/30 flex items-center justify-center">
+          <p className="text-muted-foreground text-sm text-center px-4">
+            {placeholder || "Loading video..."}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
 
 const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
   // Sections that should use minimal subtitles instead of large title pills
@@ -52,6 +164,12 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
     section.subsections.length === 2 &&
     section.subsections.some(sub => sub.title === "Release & Compression") &&
     section.subsections.some(sub => sub.title === "Branch Endpoint");
+  
+  // Special handling for Sabershot Production & Process video
+  const isSabershotProductionProcess = (subsection: any) =>
+    section.title === "Pre-Production & Development Approach" &&
+    subsection.title === "Production & Process" &&
+    subsection.media?.type === "video";
 
   return (
     <div className={`${isPuddleWhispersDesignTechniques ? 'mt-8 mb-6' : 'mt-12 mb-8'} ${(isJustMyDuckPreProduction || isJustMyDuckPostMortem) ? 'max-w-[1000px] mx-auto' : ''}`}>
@@ -321,37 +439,71 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
                   {subsection.media && (
                     <div className="flex items-center justify-center lg:justify-start">
                       {subsection.media.type === "video" ? (
-                        <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">
-                          {subsection.media.src ? (
-                            <video
+                        isSabershotProductionProcess(subsection) ? (
+                          // Sabershot Production & Process: Custom premium styling
+                          <>
+                            <style>{`
+                              .sabershot-production-video {
+                                width: 100%;
+                                max-width: 320px;
+                                height: auto;
+                                aspect-ratio: 16 / 9;
+                              }
+                              @media (min-width: 768px) {
+                                .sabershot-production-video {
+                                  width: 360px;
+                                  height: 200px;
+                                  max-width: 360px;
+                                }
+                              }
+                              @media (min-width: 1024px) {
+                                .sabershot-production-video {
+                                  width: 420px;
+                                  height: 240px;
+                                  max-width: 420px;
+                                }
+                              }
+                            `}</style>
+                            <SabershotProductionVideo 
                               src={subsection.media.src}
-                              autoPlay
-                              muted
-                              loop
-                              playsInline
-                              preload="metadata"
-                              disablePictureInPicture
-                              controlsList="nodownload nofullscreen noremoteplayback"
-                              className="w-full h-auto object-cover rounded-lg"
-                              style={{
-                                width: '100%',
-                                height: '100%',
-                                objectFit: 'cover',
-                                borderRadius: 'inherit',
-                                pointerEvents: 'none',
-                              }}
-                              onPlay={(e) => registerVideo(e.currentTarget)}
-                              onLoadedData={(e) => registerVideo(e.currentTarget)}
-                              aria-label={subsection.media.placeholder || "Production process video"}
+                              fallbackImage={(subsection.media as any).fallbackImage}
+                              placeholder={subsection.media.placeholder}
                             />
-                          ) : (
-                            <div className="w-full h-64 bg-muted/30 rounded-lg flex items-center justify-center">
-                              <p className="text-muted-foreground text-sm text-center px-4">
-                                {subsection.media.placeholder || "Video placeholder"}
-                              </p>
-                            </div>
-                          )}
-                        </div>
+                          </>
+                        ) : (
+                          // Default video styling (Echoes of Stella)
+                          <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">
+                            {subsection.media.src ? (
+                              <video
+                                src={subsection.media.src}
+                                autoPlay
+                                muted
+                                loop
+                                playsInline
+                                preload="metadata"
+                                disablePictureInPicture
+                                controlsList="nodownload nofullscreen noremoteplayback"
+                                className="w-full h-auto object-cover rounded-lg"
+                                style={{
+                                  width: '100%',
+                                  height: '100%',
+                                  objectFit: 'cover',
+                                  borderRadius: 'inherit',
+                                  pointerEvents: 'none',
+                                }}
+                                onPlay={(e) => registerVideo(e.currentTarget)}
+                                onLoadedData={(e) => registerVideo(e.currentTarget)}
+                                aria-label={subsection.media.placeholder || "Production process video"}
+                              />
+                            ) : (
+                              <div className="w-full h-64 bg-muted/30 rounded-lg flex items-center justify-center">
+                                <p className="text-muted-foreground text-sm text-center px-4">
+                                  {subsection.media.placeholder || "Video placeholder"}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        )
                       ) : (
                         <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">
                           {subsection.media.src ? (

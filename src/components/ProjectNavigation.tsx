@@ -100,11 +100,11 @@ const ProjectNavigation = ({
                     <span className="absolute -bottom-1 left-0 w-0 h-px bg-foreground group-hover:w-full transition-all duration-300" />
                   </a>
                 ) : (
-                  <button onClick={() => !link.hasDropdown && handleNavClick(link)} className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1">
-                    {link.label}
-                    {link.hasDropdown && <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.label ? 'rotate-180' : ''}`} />}
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-foreground group-hover:w-full transition-all duration-300" />
-                  </button>
+                <button onClick={() => !link.hasDropdown && handleNavClick(link)} className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1">
+                  {link.label}
+                  {link.hasDropdown && <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.label ? 'rotate-180' : ''}`} />}
+                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-foreground group-hover:w-full transition-all duration-300" />
+                </button>
                 )}
 
                 {/* Dropdown menu */}
@@ -172,9 +172,9 @@ const ProjectNavigation = ({
                       {link.label}
                     </a>
                   ) : (
-                    <button onClick={() => handleNavClick(link)} className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300">
-                      {link.label}
-                    </button>
+                  <button onClick={() => handleNavClick(link)} className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300">
+                    {link.label}
+                  </button>
                   )}
                   
                   {/* Mobile dropdown items */}

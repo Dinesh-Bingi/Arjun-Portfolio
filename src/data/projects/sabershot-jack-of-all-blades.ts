@@ -325,9 +325,10 @@ export const sabershotJackOfAllBlades: Project = {
             },
           ],
           media: {
-            type: "image",
-            src: "/images/projects/sabershot/production-process.jpg",
-            placeholder: "Production & Process Image",
+            type: "video",
+            src: "/videos/sabershot-production-process.mp4",
+            placeholder: "Production & Process Video",
+            fallbackImage: "/images/projects/sabershot/production-process.jpg",
           },
         },
       ],

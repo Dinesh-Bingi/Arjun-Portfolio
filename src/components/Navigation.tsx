@@ -121,19 +121,19 @@ const Navigation = () => {
                     <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
                   </motion.a>
                 ) : (
-                  <motion.button
-                    onClick={() => handleNavClick(link)}
-                    className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1"
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.6 + index * 0.05 }}
-                  >
-                    {link.label}
-                    {link.hasDropdown && (
-                      <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.label ? 'rotate-180' : ''}`} />
-                    )}
-                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
-                  </motion.button>
+                <motion.button
+                  onClick={() => handleNavClick(link)}
+                  className="relative font-heading text-xs tracking-wider text-muted-foreground hover:text-foreground transition-colors duration-300 group flex items-center gap-1"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 + index * 0.05 }}
+                >
+                  {link.label}
+                  {link.hasDropdown && (
+                    <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${activeDropdown === link.label ? 'rotate-180' : ''}`} />
+                  )}
+                  <span className="absolute -bottom-1 left-0 w-0 h-px bg-primary group-hover:w-full transition-all duration-300" />
+                </motion.button>
                 )}
 
                 {/* Dropdown menu */}
@@ -211,23 +211,23 @@ const Navigation = () => {
                   {link.label}
                 </motion.a>
               ) : (
-                <motion.button
-                  onClick={() => !link.hasDropdown && handleNavClick(link)}
-                  className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300"
-                  variants={{
-                    open: { 
-                      opacity: 1, 
-                      y: 0,
-                      transition: { delay: 0.1 + index * 0.05 }
-                    },
-                    closed: { 
-                      opacity: 0, 
-                      y: 20 
-                    },
-                  }}
-                >
-                  {link.label}
-                </motion.button>
+              <motion.button
+                onClick={() => !link.hasDropdown && handleNavClick(link)}
+                className="font-display text-2xl text-foreground hover:text-primary transition-colors duration-300"
+                variants={{
+                  open: { 
+                    opacity: 1, 
+                    y: 0,
+                    transition: { delay: 0.1 + index * 0.05 }
+                  },
+                  closed: { 
+                    opacity: 0, 
+                    y: 20 
+                  },
+                }}
+              >
+                {link.label}
+              </motion.button>
               )}
               
               {/* Mobile dropdown items */}
