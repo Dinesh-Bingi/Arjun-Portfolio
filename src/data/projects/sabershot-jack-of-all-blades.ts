@@ -308,7 +308,7 @@ export const sabershotJackOfAllBlades: Project = {
           ],
           media: {
             type: "image",
-            src: "/images/projects/sabershot/preproduction-breakdown.jpg",
+            src: "/images/sabershot-planning-development.png",
             placeholder: "Planning & Development Breakdown Image",
           },
         },

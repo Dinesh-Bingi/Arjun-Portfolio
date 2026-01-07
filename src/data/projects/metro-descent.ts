@@ -354,7 +354,8 @@ export const metroDescent: Project = {
           ],
           media: {
             type: "image",
-            src: "",
+            src: "/images/echo-stella-planning-development.png",
+            placeholder: "Planning & Development Approach",
           },
         },
         {

@@ -153,29 +153,6 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
             </p>
           ))}
         </div>
-      ) : isJustMyDuckPreProduction ? (
-        // Special centered layout for Just My Duck Pre-Production section
-        <div className="max-w-[1000px] mx-auto">
-          {section.subsections.map((subsection, index) => (
-            <div key={index} className="mb-10">
-              {subsection.title && (
-                <div className="flex items-center gap-3 mb-6">
-                  <div className="w-1 h-8 bg-primary rounded-full"></div>
-                  <h4 className="font-display text-base font-semibold text-foreground italic">
-                    {subsection.title}
-                  </h4>
-                </div>
-              )}
-              <div className="space-y-3 font-body text-muted-foreground leading-relaxed">
-                {subsection.paragraphs.map((p, pIndex) => (
-                  <p key={pIndex}>
-                    <HighlightedText text={p.text} highlights={p.highlights} />
-                  </p>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
       ) : isSabershotPostMortem ? (
         // Special full-width layout for Sabershot Post-Mortem (no images, subtitle structure)
         <div className="space-y-8">
@@ -285,6 +262,114 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
             </div>
           ))}
         </div>
+      ) : isJustMyDuckPreProduction ? (
+        // Special two-column layout for Just My Duck Pre-Production subsections
+        <div className="space-y-10">
+          {section.subsections.map((subsection, index) => {
+            const isPlanningSection = subsection.title === "Planning & Level Development Process";
+            const isProductionSection = subsection.title === "Production & Process";
+            const shouldUseTwoColumn = (isPlanningSection || isProductionSection) && subsection.media;
+            
+            if (!shouldUseTwoColumn) {
+              // Fallback to default rendering for other subsections
+              return (
+                <div key={index} className="mb-10">
+                  {subsection.title && (
+                    <div className="flex items-center gap-3 mb-6">
+                      <div className="w-1 h-8 bg-primary rounded-full"></div>
+                      <h4 className="font-display text-base font-semibold text-foreground italic">
+                        {subsection.title}
+                      </h4>
+                    </div>
+                  )}
+                  <div className="space-y-3 font-body text-muted-foreground leading-relaxed">
+                    {subsection.paragraphs.map((p, pIndex) => (
+                      <p key={pIndex}>
+                        <HighlightedText text={p.text} highlights={p.highlights} />
+                      </p>
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+            
+            return (
+              <div key={index} className="mb-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 xl:gap-20 items-center">
+                  {/* Left: Title + Text */}
+                  <div className="space-y-4 max-w-prose">
+                    {subsection.title && (
+                      <div className="flex items-center gap-3 mb-4">
+                        <div className="w-1 h-8 bg-primary rounded-full"></div>
+                        <h4 className="font-display text-base font-semibold text-foreground italic">
+                          {subsection.title}
+                        </h4>
+                      </div>
+                    )}
+                    <div className="space-y-3 font-body text-muted-foreground leading-relaxed">
+                      {subsection.paragraphs.map((p, pIndex) => (
+                        <p key={pIndex}>
+                          <HighlightedText text={p.text} highlights={p.highlights} />
+                        </p>
+                      ))}
+                    </div>
+                  </div>
+                  
+                  {/* Right: Media (vertically centered) - Echoes of Stella styling */}
+                  {subsection.media && (
+                    <div className="flex items-center justify-center lg:justify-start">
+                      {subsection.media.type === "video" ? (
+                        <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">
+                          {subsection.media.src ? (
+                            <video
+                              src={subsection.media.src}
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              preload="auto"
+                              className="w-full h-auto object-cover rounded-lg"
+                              style={{
+                                width: '100%',
+                                height: '100%',
+                                objectFit: 'cover',
+                                borderRadius: 'inherit',
+                                pointerEvents: 'none',
+                              }}
+                              aria-label={subsection.media.placeholder || "Production process video"}
+                            />
+                          ) : (
+                            <div className="w-full h-64 bg-muted/30 rounded-lg flex items-center justify-center">
+                              <p className="text-muted-foreground text-sm text-center px-4">
+                                {subsection.media.placeholder || "Video placeholder"}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">
+                          {subsection.media.src ? (
+                            <img
+                              src={subsection.media.src}
+                              alt={subsection.media.placeholder || subsection.title || "Planning and blockout process"}
+                              className="w-full h-auto object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-64 bg-muted/30 rounded-lg flex items-center justify-center">
+                              <p className="text-muted-foreground text-sm text-center px-4">
+                                {subsection.media.placeholder || "Image placeholder"}
+                              </p>
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
       ) : (
         // Default rendering for other sections
         section.subsections.map((subsection, index) => {
@@ -332,6 +417,12 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
           subsection.title === "Planning & Development Approach" &&
           !subsection.media;
         
+        // Check if this is Echoes of Stella or Sabershot "Planning & Development" section with media - use vertical centering
+        const isPlanningWithMedia = 
+          (subsection.title === "Planning & Development Approach" || subsection.title === "Planning & Development Breakdown") &&
+          subsection.media &&
+          (section.title === "Pre-Production & Development Approach");
+        
         return (
         <div key={index} className={marginBottom}>
           {subsection.title && (
@@ -354,7 +445,7 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
             </div>
           ) : (
             // Default two-column layout for other sections
-            <div className={`grid grid-cols-1 lg:grid-cols-2 items-start ${isPuddleWhispersDesignTechniques ? 'gap-6 lg:gap-8' : 'gap-10 lg:gap-16 xl:gap-20'}`}>
+            <div className={`grid grid-cols-1 lg:grid-cols-2 ${isPlanningWithMedia ? 'items-center' : 'items-start'} ${isPuddleWhispersDesignTechniques ? 'gap-6 lg:gap-8' : 'gap-10 lg:gap-16 xl:gap-20'}`}>
               <div className="space-y-3 font-body text-muted-foreground leading-relaxed max-w-prose">
                 {subsection.paragraphs.map((p, pIndex) => (
                   <p key={pIndex}>

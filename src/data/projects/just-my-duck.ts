@@ -176,6 +176,11 @@ export const justMyDuck: Project = {
               highlights: ["Week 3", "Refined", "blockout", "feedback", "playtesting"],
             },
           ],
+          media: {
+            type: "image",
+            src: "/images/just-my-duck-planning.png",
+            placeholder: "Planning and blockout process",
+          },
         },
         {
           title: "Production & Process",
@@ -193,6 +198,11 @@ export const justMyDuck: Project = {
               highlights: ["refined the blockout", "readability", "details", "exploration", "backtracking", "story progression"],
             },
           ],
+          media: {
+            type: "video",
+            src: "/videos/just-my-duck-process.mp4",
+            placeholder: "Production process video",
+          },
         },
       ],
     },
