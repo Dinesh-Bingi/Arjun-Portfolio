@@ -63,7 +63,7 @@ Detailed project explanations are available directly on the portfolio site.
 
 If you’d like to discuss my work or opportunities, feel free to reach out:
 
-Portfolio: [Your Portfolio Link]
+Portfolio: www.arjunkurapati.com
 
 Email: Kurapatiarjun06@gmail.com
 
