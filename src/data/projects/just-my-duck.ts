@@ -240,7 +240,7 @@ export const justMyDuck: Project = {
       type: "credits",
       title: "Credits",
       items: [
-        { label: "Developed by", credit: "a team of students at Futuregames" },
+        { label: "Developed by", credit: "Developed as part of a student team at Futuregames." },
       ],
     },
   ],

@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { Mail, Linkedin, Youtube, Palette } from "lucide-react";
 
 const socialLinks = [
-  { icon: <Mail className="w-5 h-5" />, label: "Email", href: "https://mail.google.com/mail/?view=cm&fs=1&to=Arjunreigns459@gmail.com" },
+  { icon: <Mail className="w-5 h-5" />, label: "Email", href: "https://mail.google.com/mail/?view=cm&fs=1&to=kurapatiarjun06@gmail.com" },
   { icon: <Linkedin className="w-5 h-5" />, label: "LinkedIn", href: "https://www.linkedin.com/in/arjun-kurapati-469711277" },
   { icon: <Palette className="w-5 h-5" />, label: "ArtStation", href: "https://arjunkurapati.artstation.com/" },
   { icon: <Youtube className="w-5 h-5" />, label: "YouTube", href: "https://www.youtube.com/@ArjunKurapati" },

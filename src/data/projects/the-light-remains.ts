@@ -116,7 +116,7 @@ export const theLightRemains: Project = {
         ],
         documentLink: {
           text: "Link to Game Design Document",
-          url: "https://drive.google.com/file/d/1vlEzihVW8H13u_OdnWhEgvYvYOwN6zgr/view?usp=sharing",
+          url: "https://drive.google.com/file/d/1QjeIfyQ-vnEqCQtz-SBH-ezg0ilpet8H/view?usp=sharing",
         },
       },
     },

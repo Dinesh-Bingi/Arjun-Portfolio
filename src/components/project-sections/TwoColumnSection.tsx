@@ -143,7 +143,7 @@ const TwoColumnSection = ({ section }: TwoColumnSectionProps) => {
                   rel="noopener noreferrer"
                   className="group px-6 py-3 font-heading text-sm text-foreground bg-primary/10 border border-primary/30 rounded-lg hover:bg-primary/20 hover:border-primary/50 hover:shadow-[0_0_15px_hsla(262,83%,58%,0.2)] transition-all duration-300 flex items-center gap-2 cursor-pointer"
                 >
-                  Link to Game Design Document
+                  {right.documentLink.text || "Link to Game Design Document"}
                   <span className="text-primary group-hover:translate-x-1 transition-transform duration-300">→</span>
                 </a>
               </div>

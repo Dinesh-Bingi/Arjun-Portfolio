@@ -3,7 +3,7 @@
 
 import { Project } from "./types";
 import { theLightRemains } from "./the-light-remains";
-import { metroDescent } from "./metro-descent";
+import { metroDescent } from "./Echoes-of-stella";
 import { sabershotJackOfAllBlades } from "./sabershot-jack-of-all-blades";
 import { justMyDuck } from "./just-my-duck";
 import { sushi2Go } from "./sushi-2-go";

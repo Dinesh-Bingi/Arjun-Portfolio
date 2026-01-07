@@ -103,9 +103,7 @@ export const sushi2Go: Project = {
       type: "credits",
       title: "Credits",
       items: [
-        { label: "Developed by", credit: "a distributed team at Futuregames (Warsaw & Malmö)" },
-        { label: "Platform", credit: "PC" },
-        { label: "Development Time", credit: "3 weeks" },
+        { label: "Developed by", credit: "Developed as part of a student team at Futuregames." },
       ],
     },
   ],

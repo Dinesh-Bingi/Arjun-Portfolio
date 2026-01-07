@@ -1,0 +1,59 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Soft neon pink glow for the circle -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Subtle spark highlights -->
+    <filter id="sparkGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="0.8" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Thin circular outline with soft neon pink -->
+  <circle 
+    cx="32" 
+    cy="32" 
+    r="29.5" 
+    fill="none" 
+    stroke="#FF69B4" 
+    stroke-width="1.2"
+    opacity="0.85"
+    filter="url(#glow)"
+  />
+  
+  <!-- Small spark-like highlights on the ring (8 points) -->
+  <circle cx="32" cy="2.5" r="1.2" fill="#FFB6C1" filter="url(#sparkGlow)" opacity="0.75"/>
+  <circle cx="50.5" cy="17.5" r="0.8" fill="#FFB6C1" filter="url(#sparkGlow)" opacity="0.65"/>
+  <circle cx="61.5" cy="32" r="1.2" fill="#FFB6C1" filter="url(#sparkGlow)" opacity="0.75"/>
+  <circle cx="50.5" cy="46.5" r="0.8" fill="#FFB6C1" filter="url(#sparkGlow)" opacity="0.65"/>
+  <circle cx="32" cy="61.5" r="1.2" fill="#FFB6C1" filter="url(#sparkGlow)" opacity="0.75"/>
+  <circle cx="13.5" cy="46.5" r="0.8" fill="#FFB6C1" filter="url(#sparkGlow)" opacity="0.65"/>
+  <circle cx="2.5" cy="32" r="1.2" fill="#FFB6C1" filter="url(#sparkGlow)" opacity="0.75"/>
+  <circle cx="13.5" cy="17.5" r="0.8" fill="#FFB6C1" filter="url(#sparkGlow)" opacity="0.65"/>
+  
+  <!-- AK letters in bold, clean sans-serif, white, high contrast, no gradients, no shadows -->
+  <text 
+    x="32" 
+    y="41" 
+    font-family="system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif" 
+    font-size="22" 
+    font-weight="700" 
+    fill="#FFFFFF" 
+    text-anchor="middle" 
+    dominant-baseline="middle"
+    letter-spacing="-0.5"
+    style="font-smooth: always; -webkit-font-smoothing: antialiased;"
+  >
+    AK
+  </text>
+</svg>
+

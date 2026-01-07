@@ -256,7 +256,7 @@ export const puddleWhispers: Project = {
       type: "credits",
       title: "Credits",
       items: [
-        { label: "Developed by", credit: "a small team during EDU Online Game Jam" },
+        { label: "Puddle Whispers Credit", credit: "Developed by a small team during the EDU Online Game Jam." },
       ],
     },
   ],

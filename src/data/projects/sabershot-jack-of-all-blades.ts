@@ -376,7 +376,7 @@ export const sabershotJackOfAllBlades: Project = {
       type: "credits",
       title: "Credits",
       items: [
-        { label: "Developed by", credit: "a team of 8 students at Futuregames" },
+        { label: "Developed by", credit: "Developed as part of a student team at Futuregames." },
       ],
     },
   ],
