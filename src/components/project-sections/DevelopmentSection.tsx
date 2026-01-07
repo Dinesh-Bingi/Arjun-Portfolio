@@ -1,5 +1,7 @@
 import { DevelopmentSection as DevelopmentSectionType } from "@/data/projects/types";
 import HighlightedText from "./HighlightedText";
+import { registerVideo, unregisterVideo } from "@/utils/videoManager";
+import { useEffect, useRef } from "react";
 
 interface DevelopmentSectionProps {
   section: DevelopmentSectionType;
@@ -327,7 +329,9 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
                               muted
                               loop
                               playsInline
-                              preload="auto"
+                              preload="metadata"
+                              disablePictureInPicture
+                              controlsList="nodownload nofullscreen noremoteplayback"
                               className="w-full h-auto object-cover rounded-lg"
                               style={{
                                 width: '100%',
@@ -336,6 +340,8 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
                                 borderRadius: 'inherit',
                                 pointerEvents: 'none',
                               }}
+                              onPlay={(e) => registerVideo(e.currentTarget)}
+                              onLoadedData={(e) => registerVideo(e.currentTarget)}
                               aria-label={subsection.media.placeholder || "Production process video"}
                             />
                           ) : (
@@ -505,7 +511,9 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
                             loop
                             muted
                             playsInline
-                            preload="auto"
+                            preload="metadata"
+                            disablePictureInPicture
+                            controlsList="nodownload nofullscreen noremoteplayback"
                             className="w-full h-auto object-cover rounded-lg"
                             style={{
                               width: '100%',
@@ -514,6 +522,8 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
                               borderRadius: 'inherit',
                               pointerEvents: 'none',
                             }}
+                            onPlay={(e) => registerVideo(e.currentTarget)}
+                            onLoadedData={(e) => registerVideo(e.currentTarget)}
                             aria-label={subsection.media.src.includes("production-process") ? "Echoes of Stella production process" : "Level design process showing blockout, iteration, and playtesting"}
                           />
                         </div>
@@ -549,7 +559,13 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
                             loop
                             muted
                             playsInline
+                            preload="metadata"
+                            disablePictureInPicture
+                            controlsList="nodownload nofullscreen noremoteplayback"
                             className="w-full h-auto object-cover"
+                            style={{ pointerEvents: 'none' }}
+                            onPlay={(e) => registerVideo(e.currentTarget)}
+                            onLoadedData={(e) => registerVideo(e.currentTarget)}
                             aria-label="Level design process showing blockout, iteration, and playtesting"
                           />
                         </div>

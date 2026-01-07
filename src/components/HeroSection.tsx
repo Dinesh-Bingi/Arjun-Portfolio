@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
+import { registerVideo, unregisterVideo } from "@/utils/videoManager";
 
 interface HeroSectionProps {
   isLoading: boolean;
@@ -79,6 +80,23 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
     }
   }, [isLoading]);
 
+  // Register hero video for single-play management
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handlePlay = () => {
+      registerVideo(video);
+    };
+
+    video.addEventListener("play", handlePlay);
+
+    return () => {
+      video.removeEventListener("play", handlePlay);
+      unregisterVideo(video);
+    };
+  }, []);
+
   // Handle video pause when tab is inactive
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -115,9 +133,13 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
           loop
           muted
           playsInline
-          preload="none"
+          preload="metadata"
+          disablePictureInPicture
+          controlsList="nodownload nofullscreen noremoteplayback"
           className="absolute inset-0 w-full h-full object-cover z-0"
+          style={{ pointerEvents: 'none' }}
         >
+          <source src="/videos/hero-background.webm" type="video/webm" />
           <source src="/videos/hero-background.mp4" type="video/mp4" />
         </video>
 
