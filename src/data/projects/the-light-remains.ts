@@ -239,7 +239,7 @@ export const theLightRemains: Project = {
           ],
           media: {
             type: "image",
-            src: "",
+            src: "/images/light-remains-planning-development.png",
             placeholder: "Development workflow image placeholder - upload your image",
           },
         },
@@ -260,7 +260,7 @@ export const theLightRemains: Project = {
     // Experience the Level CTA
     {
       type: "levelExperienceCTA",
-      url: "https://your-playable-build-link-here",
+      url: "https://drive.google.com/file/d/1hXjvYtQcRjVlYiQAn01dnbMiIA3kMGbl/view?usp=sharing",
       imageUrl: "/images/cta-reference.png",
     },
     
@@ -285,12 +285,9 @@ export const theLightRemains: Project = {
       type: "credits",
       title: "Credits",
       items: [
-        { label: "Spirit Mask Asset", credit: "Dmitry Schnein" },
-        { label: "Boat Asset", credit: "Dmitry Schnein" },
-        { label: "Human Skull Asset", credit: "Johan Hansson" },
-        { label: "Beer Skull Asset", credit: "Johan Hansson" },
-        { label: "Totem Asset", credit: "Stewart MacLean" },
-        { label: "Sword Asset", credit: "MMKH" },
+        { label: "Helicopter Asset", credit: "linus1178" },
+        { label: "Skull Asset", credit: "Vladimir E" },
+        { label: "Agls", credit: "Jakub W" },
       ],
     },
   ],

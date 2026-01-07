@@ -23,8 +23,8 @@ const navLinks: ProjectNavLink[] = [{
   hasDropdown: true,
   category: "group"
 }, {
-  label: "Professional Work",
-  href: "#professional-work"
+  label: "My Journey",
+  href: "#my-Journey"
 }, {
   label: "About",
   href: "#about"
