@@ -8,7 +8,7 @@ interface TextSectionProps {
 const TextSection = ({ section }: TextSectionProps) => {
   // Special layout for Level Streaming section
   const isLevelStreaming = section.title === "Level Streaming" && section.paragraphs.length >= 2;
-  
+
   // Special padding for Key Contribution section (Sushi 2 Go)
   const isKeyContribution = section.title === "Key Contribution";
 
@@ -28,9 +28,9 @@ const TextSection = ({ section }: TextSectionProps) => {
           </p>
           
           {/* Second paragraph - full width, matching first paragraph alignment */}
-          <p>
-            <HighlightedText text={section.paragraphs[1].text} highlights={section.paragraphs[1].highlights} />
-          </p>
+            <p>
+              <HighlightedText text={section.paragraphs[1].text} highlights={section.paragraphs[1].highlights} />
+            </p>
           
           {/* Image - same constraint as second paragraph */}
           <div className="mx-auto max-w-[720px] mt-6">

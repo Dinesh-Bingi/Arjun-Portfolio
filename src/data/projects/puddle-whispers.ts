@@ -131,8 +131,8 @@ export const puddleWhispers: Project = {
           { icon: "Mountain", label: "Emotional Atmosphere" },
         ],
         documentLink: {
-          text: "Link to Game Design Document",
-          url: "",
+          text: "Level Design Document",
+          url: "https://drive.google.com/file/d/1_Av8iheC64O-hdtqKFBaADHFibNxnHEq/view?usp=sharing",
         },
       },
     },

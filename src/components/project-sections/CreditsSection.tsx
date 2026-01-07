@@ -26,8 +26,8 @@ const CreditsSection = ({ section }: CreditsSectionProps) => {
           </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {section.items.map((item, index) => (
-              <p key={index}>
+        {section.items.map((item, index) => (
+          <p key={index}>
                 {item.label === "Developed by" ? (
                   item.credit
                 ) : (
@@ -37,8 +37,8 @@ const CreditsSection = ({ section }: CreditsSectionProps) => {
                     {item.credit}
                   </>
                 )}
-              </p>
-            ))}
+          </p>
+        ))}
           </div>
         )}
       </div>

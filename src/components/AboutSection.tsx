@@ -58,8 +58,8 @@ const AboutSection = () => {
               </p>
               <p>
                 I am currently studying Game Design at Futuregames, specializing in Systems Design, while actively working on solo and team-based projects that focus on level blockouts, player flow, interaction design, and technical implementation using Unreal Engine.
-              </p>
-            </motion.div>
+                  </p>
+                </motion.div>
           </div>
         </div>
 

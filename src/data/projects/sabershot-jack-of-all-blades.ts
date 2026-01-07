@@ -142,8 +142,8 @@ export const sabershotJackOfAllBlades: Project = {
           { icon: "BookOpen", label: "Storytelling" },
         ],
         documentLink: {
-          text: "Link to Game Design Document",
-          url: "",
+          text: "Level Design Document",
+          url: "https://drive.google.com/file/d/1O3OyWEgm7d1-8VNFh0Q_vxpSTkyz2uky/view?usp=sharing",
         },
       },
     },
@@ -337,7 +337,7 @@ export const sabershotJackOfAllBlades: Project = {
     // Experience the Level CTA
     {
       type: "levelExperienceCTA",
-      url: "https://your-playable-build-link-here",
+      url: "https://drive.google.com/file/d/1QV9c9-g0RU6DG6D3Wt42ZNgjRYixoH8Y/view?usp=sharing",
       imageUrl: "/images/cta-reference.png",
     },
     

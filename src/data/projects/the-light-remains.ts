@@ -115,7 +115,7 @@ export const theLightRemains: Project = {
           { icon: "BookOpen", label: "Storytelling" },
         ],
         documentLink: {
-          text: "Link to Game Design Document",
+          text: "Game Design Document",
           url: "https://drive.google.com/file/d/1QjeIfyQ-vnEqCQtz-SBH-ezg0ilpet8H/view?usp=sharing",
         },
       },

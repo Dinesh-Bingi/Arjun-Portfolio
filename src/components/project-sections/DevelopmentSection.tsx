@@ -394,22 +394,22 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
               // Fallback to default rendering for other subsections
               return (
                 <div key={index} className="mb-10">
-                  {subsection.title && (
-                    <div className="flex items-center gap-3 mb-6">
-                      <div className="w-1 h-8 bg-primary rounded-full"></div>
-                      <h4 className="font-display text-base font-semibold text-foreground italic">
-                        {subsection.title}
-                      </h4>
-                    </div>
-                  )}
-                  <div className="space-y-3 font-body text-muted-foreground leading-relaxed">
-                    {subsection.paragraphs.map((p, pIndex) => (
-                      <p key={pIndex}>
-                        <HighlightedText text={p.text} highlights={p.highlights} />
-                      </p>
-                    ))}
-                  </div>
+              {subsection.title && (
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-1 h-8 bg-primary rounded-full"></div>
+                  <h4 className="font-display text-base font-semibold text-foreground italic">
+                    {subsection.title}
+                  </h4>
                 </div>
+              )}
+              <div className="space-y-3 font-body text-muted-foreground leading-relaxed">
+                {subsection.paragraphs.map((p, pIndex) => (
+                  <p key={pIndex}>
+                    <HighlightedText text={p.text} highlights={p.highlights} />
+                  </p>
+                ))}
+              </div>
+            </div>
               );
             }
             

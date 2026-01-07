@@ -117,8 +117,8 @@ export const justMyDuck: Project = {
           { icon: "BookOpen", label: "Narrative Through Space" },
         ],
         documentLink: {
-          text: "Link to Game Design Document",
-          url: "",
+          text: "Level Design Document",
+          url: "https://drive.google.com/file/d/1PM31rbraqbhldCYnWS2R-um1l6U6rhyf/view?usp=sharing",
         },
       },
     },

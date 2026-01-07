@@ -46,7 +46,7 @@ const ExperienceSection = () => {
             </span>
           </div>
           <h2 className="font-display text-3xl md:text-4xl font-bold text-gradient">
-            Experience Timeline
+          Education & Experience Timeline
           </h2>
         </motion.div>
 

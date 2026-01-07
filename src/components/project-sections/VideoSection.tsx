@@ -77,13 +77,13 @@ const VideoSection = ({ section }: VideoSectionProps) => {
     <div ref={containerRef} className="mb-8 flex justify-center">
       <div className="relative rounded-xl overflow-hidden border border-border/50 shadow-xl max-w-4xl w-full aspect-video bg-secondary/20">
         {isVisible ? (
-          <video
-            ref={videoRef}
+        <video
+          ref={videoRef}
             className="w-full h-full object-cover"
-            autoPlay={section.autoPlay ?? true}
-            loop={section.loop ?? true}
-            muted={section.muted ?? true}
-            playsInline
+          autoPlay={section.autoPlay ?? true}
+          loop={section.loop ?? true}
+          muted={section.muted ?? true}
+          playsInline
             preload="metadata"
             disablePictureInPicture
             controlsList="nodownload nofullscreen noremoteplayback"
