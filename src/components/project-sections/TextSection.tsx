@@ -22,17 +22,15 @@ const TextSection = ({ section }: TextSectionProps) => {
       
       {isLevelStreaming ? (
         <div className="space-y-5 font-body text-muted-foreground leading-relaxed">
-          {/* First paragraph - full width */}
+          {/* First paragraph - full width, no marker */}
           <p>
             <HighlightedText text={section.paragraphs[0].text} highlights={section.paragraphs[0].highlights} />
           </p>
           
-          {/* Second paragraph - constrained width */}
-          <div className="mx-auto max-w-[720px] mt-6">
-            <p>
-              <HighlightedText text={section.paragraphs[1].text} highlights={section.paragraphs[1].highlights} />
-            </p>
-          </div>
+          {/* Second paragraph - full width, matching first paragraph alignment */}
+          <p>
+            <HighlightedText text={section.paragraphs[1].text} highlights={section.paragraphs[1].highlights} />
+          </p>
           
           {/* Image - same constraint as second paragraph */}
           <div className="mx-auto max-w-[720px] mt-6">

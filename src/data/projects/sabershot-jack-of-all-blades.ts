@@ -244,27 +244,27 @@ export const sabershotJackOfAllBlades: Project = {
       title: "Level Beats & Walkthrough",
       phases: [
         {
-          name: "Act 1 – Entry into the Cursed City",
+          name: "Phase 1",
           beats: [
-            { number: 1, label: "Player Arrival – Fog-covered streets" },
-            { number: 2, label: "Market Ambush – First major combat" },
-            { number: 3, label: "Cult Signs – Environmental hints" },
+            { number: 1, label: "Player Arrival" },
+            { number: 2, label: "Market Ambush" },
+            { number: 3, label: "Cult Signs" },
           ],
         },
         {
-          name: "Act 2 – Up and Down Tension",
+          name: "Phase 2",
           beats: [
-            { number: 4, label: "Open Exploration – Branching paths" },
-            { number: 5, label: "Combat Escalation – Tighter and pressure" },
-            { number: 6, label: "Transition Space – Rooftops or sewers" },
+            { number: 4, label: "Open Exploration" },
+            { number: 5, label: "Combat Escalation" },
+            { number: 6, label: "Transition Space" },
           ],
         },
         {
-          name: "Act 3 – Truth & Consequence",
+          name: "Phase 3",
           beats: [
-            { number: 7, label: "Point of No Return – into cult territory" },
-            { number: 8, label: "Final Approach – combat buildup" },
-            { number: 9, label: "Ritual Chamber – Boss fight climax" },
+            { number: 7, label: "Point of No Return" },
+            { number: 8, label: "Final Approach" },
+            { number: 9, label: "Ritual Chamber" },
           ],
         },
       ],
@@ -290,16 +290,16 @@ export const sabershotJackOfAllBlades: Project = {
           title: "Planning & Development Breakdown",
           paragraphs: [
             {
-              text: "Week 1: Research, references, and documentation (GDD & LDD)",
-              highlights: ["Week 1:", "Research", "references", "documentation", "GDD", "LDD"],
+              text: "Week 1: Research, references, and documentation",
+              highlights: ["Week 1:", "Research", "references", "documentation"],
             },
             {
-              text: "Week 2: Prototyping and validating core gameplay and level ideas",
-              highlights: ["Week 2:", "Prototyping", "validating", "core gameplay", "level ideas"],
+              text: "Week 2: Prototyping and validating core ideas",
+              highlights: ["Week 2:", "Prototyping", "validating", "core ideas"],
             },
             {
-              text: "Week 3: Creating the initial rough blockout of the level",
-              highlights: ["Week 3:", "initial rough blockout"],
+              text: "Week 3: Initial rough level blockout ",
+              highlights: ["Week 3:", "initial rough levelblockout"],
             },
             {
               text: "Week 4: Refining the blockout for flow, scale, and clarity, while adding basic set dressing, setting up level streaming, and applying early lighting for readability",

@@ -57,10 +57,10 @@ const LevelBeatsSection = ({ section }: LevelBeatsSectionProps) => {
         <div className="space-y-4">
           {section.phases.map((phase, phaseIndex) => (
             <div key={phaseIndex}>
-              <h4 className="font-display text-sm font-semibold text-foreground mb-2">
+              <h4 className="font-display text-base font-semibold text-foreground mb-2">
                 {phase.name}
               </h4>
-              <ul className="space-y-1 font-body text-xs text-muted-foreground">
+              <ul className="space-y-1 font-body text-sm text-muted-foreground">
                 {phase.beats.map((beat, beatIndex) => (
                   <li key={beatIndex}>
                     <span className="text-primary">{beat.number}.</span> {beat.label}
