@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import HomeSkillsSection from "@/components/HomeSkillsSection";
@@ -16,6 +16,15 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const Index = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [ogImageUrl, setOgImageUrl] = useState("/images/hero-image.png");
+
+  useEffect(() => {
+    // Construct absolute URL for og:image
+    if (typeof window !== "undefined") {
+      const absoluteUrl = `${window.location.origin}/images/hero-image.png`;
+      setOgImageUrl(absoluteUrl);
+    }
+  }, []);
 
   return (
     <>
@@ -26,9 +35,12 @@ const Index = () => {
           content="Game Designer & Level Designer crafting immersive game worlds at Future Games. Specializing in environmental storytelling, player flow, and atmospheric design." 
         />
         <meta name="keywords" content="Game Designer, Level Designer, Game Developer, Unreal Engine, Unity, Environmental Design, Future Games" />
-        <meta property="og:title" content="Kurapati Arjun | Game Designer & Level Designer" />
-        <meta property="og:description" content="Designing immersive worlds players remember" />
+        <meta property="og:title" content="Kurapati Arjun – Level Designer" />
+        <meta property="og:description" content="Portfolio of Kurapati Arjun – Level Designer & Game Designer" />
         <meta property="og:type" content="website" />
+        <meta property="og:image" content={ogImageUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={ogImageUrl} />
       </Helmet>
 
       {/* Loading screen */}
