@@ -49,6 +49,7 @@ export const sushi2Go: Project = {
             highlights: ["VFX Design", "Minor Contribution", "screen-edge speed line effects", "sense of movement", "speed", "visual feedback", "conveyor belt accelerates"],
           },
         ],
+        image: "/images/sushi-2-go-vfx-gameplay.png",
       },
     },
     

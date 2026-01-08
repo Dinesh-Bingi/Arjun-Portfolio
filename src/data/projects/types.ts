@@ -195,6 +195,7 @@ export interface TwoColumnSection {
       text: string;
       url: string;
     };
+    image?: string;
   };
 }
 

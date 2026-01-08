@@ -72,6 +72,19 @@ const TwoColumnSection = ({ section }: TwoColumnSectionProps) => {
           </ul>
         )}
         
+        {right.image && (
+          <div className="mt-8 flex justify-center">
+            <div className="relative w-full max-w-xs rounded-lg overflow-hidden border border-primary/20 shadow-[0_4px_12px_rgba(0,0,0,0.15),0_0_20px_hsla(262,83%,58%,0.12)] group hover:border-primary/30 hover:shadow-[0_4px_16px_rgba(0,0,0,0.2),0_0_25px_hsla(262,83%,58%,0.18)] transition-all duration-300">
+              <img
+                src={right.image}
+                alt="Gameplay"
+                className="w-full h-auto object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
+          </div>
+        )}
+        
         {right.pillars && (
           <>
             {/* Check if this is Puddle Whispers Design Pillars (has "Reflection Through Interaction") */}
