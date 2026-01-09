@@ -9,10 +9,15 @@ export default defineConfig(({ mode }) => ({
     host: "::",
     port: 8080,
   },
+  preview: {
+    port: 8080,
+  },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  // Note: For SPA routing in development, Vite automatically serves index.html for all routes
+  // For production, use _redirects (Netlify) or vercel.json (Vercel) files
 }));

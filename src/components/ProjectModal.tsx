@@ -47,9 +47,10 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
   const isEchoesOfStella = project?.id === "metro-descent";
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {project && (
         <motion.div
+          key={project.id}
           className="fixed inset-0 z-[100] w-screen h-screen overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -120,9 +121,9 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
             {/* Content - Centered with max-width for readability */}
             <div className="max-w-5xl mx-auto px-6 md:px-10 lg:px-16 xl:px-20 pt-4 pb-10 relative z-0">
-              {/* Render all sections dynamically */}
+              {/* Render all sections dynamically - use project.id in key to force remount on project change */}
               {project.sections.map((section, index) => (
-                <SectionRenderer key={index} section={section} />
+                <SectionRenderer key={`${project.id}-${index}-${section.type}`} section={section} projectId={project.id} />
               ))}
 
               <div className="pt-6"></div>

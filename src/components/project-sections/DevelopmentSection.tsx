@@ -5,22 +5,38 @@ import { useEffect, useRef, useState } from "react";
 
 interface DevelopmentSectionProps {
   section: DevelopmentSectionType;
+  projectId?: string;
 }
 
 // Sabershot Production & Process Video Component with lazy loading
 const SabershotProductionVideo = ({ 
   src, 
   fallbackImage, 
-  placeholder 
+  placeholder,
+  projectId
 }: { 
   src: string; 
   fallbackImage?: string; 
   placeholder?: string;
+  projectId?: string;
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hasError, setHasError] = useState(false);
+
+  // Reset video when project changes
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.pause();
+      video.currentTime = 0;
+      video.load();
+      unregisterVideo(video);
+      setIsVisible(false);
+      setHasError(false);
+    }
+  }, [projectId, src]);
 
   // Lazy load video when it becomes visible
   useEffect(() => {
@@ -119,7 +135,7 @@ const SabershotProductionVideo = ({
   );
 };
 
-const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
+const DevelopmentSection = ({ section, projectId }: DevelopmentSectionProps) => {
   // Sections that should use minimal subtitles instead of large title pills
   // Note: "Planning & Development Breakdown" and "Production & Process" are now subsections,
   // so they automatically use the vertical line subtitle style
@@ -468,6 +484,7 @@ const DevelopmentSection = ({ section }: DevelopmentSectionProps) => {
                               src={subsection.media.src}
                               fallbackImage={(subsection.media as any).fallbackImage}
                               placeholder={subsection.media.placeholder}
+                              projectId={projectId}
                             />
                           </>
                         ) : (

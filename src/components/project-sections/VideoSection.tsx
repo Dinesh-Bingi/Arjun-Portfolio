@@ -4,13 +4,40 @@ import { registerVideo, unregisterVideo, getVideoSources } from "@/utils/videoMa
 
 interface VideoSectionProps {
   section: VideoSectionType;
+  projectId?: string; // Add projectId to force reset on project change
 }
 
-const VideoSection = ({ section }: VideoSectionProps) => {
+const VideoSection = ({ section, projectId }: VideoSectionProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+
+  // Reset video when section or project changes (project switch)
+  useEffect(() => {
+    const video = videoRef.current;
+    
+    // Reset state when video URL or project changes
+    setIsVisible(false);
+    setIsLoaded(false);
+
+    if (video) {
+      // Reset video when section or project changes
+      video.pause();
+      video.currentTime = 0;
+      video.load();
+      unregisterVideo(video);
+    }
+
+    return () => {
+      // Cleanup: pause and reset on unmount
+      if (video) {
+        video.pause();
+        video.currentTime = 0;
+        unregisterVideo(video);
+      }
+    };
+  }, [section.videoUrl, projectId]); // Reset when video URL or project changes
 
   // Lazy load video when it becomes visible
   useEffect(() => {
@@ -33,10 +60,10 @@ const VideoSection = ({ section }: VideoSectionProps) => {
     return () => observer.disconnect();
   }, []);
 
-  // Register video for single-play management
+  // Register video for single-play management and handle playback
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || !isVisible) return;
 
     const handlePlay = () => {
       registerVideo(video);
@@ -44,17 +71,28 @@ const VideoSection = ({ section }: VideoSectionProps) => {
 
     const handleLoadedData = () => {
       setIsLoaded(true);
+      // Auto-play if configured
+      if (section.autoPlay !== false) {
+        video.play().catch(() => {
+          // Ignore autoplay errors
+        });
+      }
     };
 
     video.addEventListener("play", handlePlay);
     video.addEventListener("loadeddata", handleLoadedData);
+
+    // Ensure video loads when visible
+    if (isVisible && video.readyState === 0) {
+      video.load();
+    }
 
     return () => {
       video.removeEventListener("play", handlePlay);
       video.removeEventListener("loadeddata", handleLoadedData);
       unregisterVideo(video);
     };
-  }, [isVisible]);
+  }, [isVisible, section.autoPlay]);
 
   // Show placeholder if video URL is empty
   if (!section.videoUrl || section.videoUrl.trim() === "") {

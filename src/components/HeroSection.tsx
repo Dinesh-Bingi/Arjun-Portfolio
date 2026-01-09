@@ -94,9 +94,25 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
       
       if (isLandingPage && !isLoading) {
         // Resume video when on landing page
-        video.play().catch(() => {
-          // Ignore autoplay errors (browser may block autoplay)
-        });
+        // Reset video to beginning if it's at the end
+        if (video.ended) {
+          video.currentTime = 0;
+        }
+        // Ensure video is ready before playing
+        if (video.readyState >= 2) {
+          video.play().catch(() => {
+            // Ignore autoplay errors (browser may block autoplay)
+          });
+        } else {
+          // Wait for video to be ready
+          const handleCanPlay = () => {
+            video.play().catch(() => {
+              // Ignore autoplay errors
+            });
+            video.removeEventListener('canplay', handleCanPlay);
+          };
+          video.addEventListener('canplay', handleCanPlay);
+        }
       } else {
         // Pause video when navigating away from landing page
         video.pause();
@@ -105,7 +121,8 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
 
     // Handle popstate (browser back/forward buttons)
     const handlePopState = () => {
-      updateVideoPlayback();
+      // Small delay to ensure URL has updated
+      setTimeout(updateVideoPlayback, 0);
     };
 
     // Handle project open/close events
@@ -116,9 +133,10 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
     const handleProjectClose = () => {
       const pathname = window.location.pathname;
       if (pathname === '/' && !isLoading) {
-        video.play().catch(() => {
-          // Ignore autoplay errors
-        });
+        // Small delay to ensure state is updated
+        setTimeout(() => {
+          updateVideoPlayback();
+        }, 0);
       }
     };
 

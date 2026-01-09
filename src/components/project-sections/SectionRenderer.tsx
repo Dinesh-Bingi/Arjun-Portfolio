@@ -14,12 +14,13 @@ import LevelExperienceCTA from "./LevelExperienceCTA";
 
 interface SectionRendererProps {
   section: ProjectSection;
+  projectId?: string;
 }
 
-const SectionRenderer = ({ section }: SectionRendererProps) => {
+const SectionRenderer = ({ section, projectId }: SectionRendererProps) => {
   switch (section.type) {
     case "video":
-      return <VideoSection section={section} />;
+      return <VideoSection section={section} projectId={projectId} />;
     case "twoColumn":
       return <TwoColumnSection section={section} />;
     case "screenshotGallery":
@@ -35,7 +36,7 @@ const SectionRenderer = ({ section }: SectionRendererProps) => {
     case "graph":
       return <GraphSection section={section} />;
     case "development":
-      return <DevelopmentSection section={section} />;
+      return <DevelopmentSection section={section} projectId={projectId} />;
     case "postMortem":
       return <PostMortemSection section={section} />;
     case "credits":
