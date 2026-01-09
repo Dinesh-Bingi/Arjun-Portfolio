@@ -150,8 +150,8 @@ const ProjectSection = ({ category, title, id }: ProjectSectionProps) => {
 const ProjectsSection = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  useEffect(() => {
-    // Check URL on mount to open project if URL is /projects/project-id
+  // Function to sync modal state with current URL
+  const syncModalWithUrl = () => {
     const pathname = window.location.pathname;
     if (pathname.startsWith('/projects/')) {
       const projectId = pathname.replace('/projects/', '');
@@ -161,8 +161,17 @@ const ProjectsSection = () => {
       } else {
         // Invalid project ID in URL, redirect to home
         window.history.replaceState(null, '', '/');
+        setSelectedProject(null);
       }
+    } else {
+      // URL is not a project URL, close modal
+      setSelectedProject(null);
     }
+  };
+
+  useEffect(() => {
+    // Check URL on mount to open project if URL is /projects/project-id
+    syncModalWithUrl();
 
     const handleOpenProject = (event: CustomEvent<{ projectId: string }>) => {
       const project = projects.find(p => p.id === event.detail.projectId);
@@ -171,8 +180,18 @@ const ProjectsSection = () => {
       }
     };
 
+    // Listen to popstate (back/forward button) to sync UI with URL changes
+    const handlePopState = () => {
+      syncModalWithUrl();
+    };
+
     window.addEventListener('openProject', handleOpenProject as EventListener);
-    return () => window.removeEventListener('openProject', handleOpenProject as EventListener);
+    window.addEventListener('popstate', handlePopState);
+    
+    return () => {
+      window.removeEventListener('openProject', handleOpenProject as EventListener);
+      window.removeEventListener('popstate', handlePopState);
+    };
   }, []);
 
   return (
@@ -186,6 +205,10 @@ const ProjectsSection = () => {
             project={selectedProject}
             onClose={() => {
               setSelectedProject(null);
+              // Update URL when closing manually
+              if (window.location.pathname.startsWith('/projects/')) {
+                window.history.replaceState(null, '', '/');
+              }
               window.dispatchEvent(new CustomEvent('closeProject'));
             }}
           />

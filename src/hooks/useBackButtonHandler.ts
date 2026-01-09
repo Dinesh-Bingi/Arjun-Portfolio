@@ -63,13 +63,19 @@ export const useBackButtonHandler = () => {
         return;
       }
 
-      // Check current URL - if it's no longer a project URL, close modal
+      // Check current URL to determine if we're navigating to/from a project
       const currentPath = window.location.pathname;
-      if (!currentPath.startsWith('/projects/') && isModalOpen) {
-        window.dispatchEvent(new CustomEvent('closeProject'));
+      const isNavigatingToProject = currentPath.startsWith('/projects/');
+      const isNavigatingToLanding = currentPath === '/';
+
+      // Update modal state based on URL (ProjectsSection will handle this via its own popstate listener)
+      // We just need to update our internal state tracking
+      if (!isNavigatingToProject && isModalOpen) {
+        setIsModalOpen(false);
         hasHistoryEntry.current = false;
         hasHandledBack.current = false;
-        return;
+      } else if (isNavigatingToProject && !isModalOpen) {
+        setIsModalOpen(true);
       }
 
       // Check if this is a portfolio state (project or scroll)
@@ -84,23 +90,18 @@ export const useBackButtonHandler = () => {
       // Check if we're at the top
       const isAtTop = window.scrollY <= scrollThreshold;
 
-      // Priority: Handle project modal back navigation
-      // If modal is open, we're navigating back from project view
-      if (isModalOpen && hasHistoryEntry.current) {
-        // First back press from project: close modal, scroll to top, return to landing
-        if (!hasHandledBack.current) {
-          hasHandledBack.current = true;
-          window.dispatchEvent(new CustomEvent('closeProject'));
-          // Scroll to top
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-          // Restore URL to landing page and push state back to keep user on page
-          window.history.pushState({ fromPortfolio: true, handled: true }, '', '/');
-          return;
-        }
+      // Handle project modal back navigation - scroll to top when returning to landing
+      if (isNavigatingToLanding && hasHistoryEntry.current) {
+        // Scroll to top when returning to landing page
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Reset flags
+        hasHistoryEntry.current = false;
+        hasHandledBack.current = false;
+        return;
       }
 
       // Handle scroll-based back navigation (when no modal is open and not a project state)
-      if (!isModalOpen && (stateType === 'scroll' || (isPortfolioState && stateType !== 'project'))) {
+      if (!isNavigatingToProject && (stateType === 'scroll' || (isPortfolioState && stateType !== 'project'))) {
         // If at top, let them navigate away
         if (isAtTop) {
           hasHistoryEntry.current = false;
