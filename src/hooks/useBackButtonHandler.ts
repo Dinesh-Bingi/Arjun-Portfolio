@@ -2,11 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 
 /**
  * Custom hook to handle browser back button behavior.
- * On first back press, scrolls to top or closes modal.
- * After returning to home, subsequent back presses behave normally.
+ * When a project is opened, creates a history entry.
+ * On first back press from project view, closes modal and returns to landing page.
+ * On second back press, allows normal navigation away.
  */
 export const useBackButtonHandler = () => {
-  const hasAddedHistoryEntry = useRef(false);
+  const hasHistoryEntry = useRef(false);
+  const hasHandledBack = useRef(false);
   const scrollThreshold = 100; // Minimum scroll to trigger back button handling
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -15,19 +17,18 @@ export const useBackButtonHandler = () => {
     const handleOpenProject = () => {
       setIsModalOpen(true);
       
-      // Add history entry when modal opens (only if not already added)
-      if (!hasAddedHistoryEntry.current) {
-        hasAddedHistoryEntry.current = true;
-        window.history.pushState({ fromPortfolio: true, type: 'modal' }, '', window.location.pathname);
-      }
+      // ALWAYS create a history entry when project opens
+      // This ensures back button from project view returns to landing page
+      // Always pushState (don't replace) to create a proper history stack
+      hasHistoryEntry.current = true;
+      hasHandledBack.current = false;
+      window.history.pushState({ fromPortfolio: true, type: 'project' }, '', window.location.pathname);
     };
 
     const handleCloseProject = () => {
       setIsModalOpen(false);
-      // If we're at the top after closing modal, reset the flag
-      if (window.scrollY <= scrollThreshold) {
-        hasAddedHistoryEntry.current = false;
-      }
+      // Don't reset history flags here - they'll be reset when back navigation is handled
+      // This allows proper back button behavior even if modal is closed manually
     };
 
     // Listen to project modal events
@@ -36,40 +37,69 @@ export const useBackButtonHandler = () => {
     // Listen for modal close
     window.addEventListener('closeProject', handleCloseProject);
 
-    // Add history entry when user scrolls down
+    // Add history entry when user scrolls down (only if no project is open)
     const handleScroll = () => {
-      if (!hasAddedHistoryEntry.current && window.scrollY > scrollThreshold && !isModalOpen) {
-        hasAddedHistoryEntry.current = true;
+      if (!hasHistoryEntry.current && window.scrollY > scrollThreshold && !isModalOpen) {
+        hasHistoryEntry.current = true;
+        hasHandledBack.current = false;
         window.history.pushState({ fromPortfolio: true, type: 'scroll' }, '', window.location.pathname);
       }
     };
 
     // Handle popstate (back button)
     const handlePopState = (event: PopStateEvent) => {
-      // Only handle if we previously added a history entry
-      if (!hasAddedHistoryEntry.current) {
-        return;
-      }
-
-      // Check if we're at the top and no modal is open
-      const isAtTop = window.scrollY <= scrollThreshold;
+      // Check the state we're navigating to
+      const state = event.state as { fromPortfolio?: boolean; handled?: boolean; type?: string } | null;
       
-      if (isAtTop && !isModalOpen) {
-        // User is at top with no modal - let them navigate away
-        hasAddedHistoryEntry.current = false;
+      // If this is our "handled" state (pushed back after first back press), ignore it
+      if (state?.handled) {
         return;
       }
 
-      // User is scrolled down or modal is open - scroll to top or close modal
-      if (isModalOpen) {
-        window.dispatchEvent(new CustomEvent('closeProject'));
-      } else {
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Check if this is a portfolio state (project or scroll)
+      const isPortfolioState = state?.fromPortfolio === true;
+      const stateType = state?.type;
+      
+      // If not a portfolio state and we have no history entry, let browser navigate away
+      if (!isPortfolioState && !hasHistoryEntry.current) {
+        return;
       }
 
-      // Push state back to keep user on page
-      window.history.pushState({ fromPortfolio: true, handled: true }, '', window.location.pathname);
+      // Check if we're at the top
+      const isAtTop = window.scrollY <= scrollThreshold;
+
+      // Priority: Handle project modal back navigation
+      // If modal is open, we're navigating back from project view
+      if (isModalOpen && hasHistoryEntry.current) {
+        // First back press from project: close modal, scroll to top, return to landing
+        if (!hasHandledBack.current) {
+          hasHandledBack.current = true;
+          window.dispatchEvent(new CustomEvent('closeProject'));
+          // Scroll to top
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          // Push state back to keep user on page
+          window.history.pushState({ fromPortfolio: true, handled: true }, '', window.location.pathname);
+          return;
+        }
+      }
+
+      // Handle scroll-based back navigation (when no modal is open and not a project state)
+      if (!isModalOpen && (stateType === 'scroll' || (isPortfolioState && stateType !== 'project'))) {
+        // If at top, let them navigate away
+        if (isAtTop) {
+          hasHistoryEntry.current = false;
+          hasHandledBack.current = false;
+          return; // Let browser navigate away naturally
+        }
+
+        // If scrolled down, scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Push state back to keep user on page
+        window.history.pushState({ fromPortfolio: true, handled: true }, '', window.location.pathname);
+        hasHistoryEntry.current = false;
+        hasHandledBack.current = false;
+        return;
+      }
     };
 
     // Listen to scroll events
