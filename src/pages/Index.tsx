@@ -36,20 +36,20 @@ const Index = () => {
         
         {/* Open Graph Meta Tags */}
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="Kurapati Arjun Portfolio" />
+        <meta property="og:site_name" content="Kurapati Arjun" />
         <meta property="og:title" content="Kurapati Arjun – Game & Level Designer" />
         <meta property="og:description" content="Portfolio of Kurapati Arjun showcasing level design, gameplay systems, and game projects." />
         <meta property="og:url" content="https://arjunkurapati.com/" />
         <meta property="og:image" content={ogImageUrl} />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:type" content="image/jpeg" />
         
         {/* Twitter / X Card Meta Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Kurapati Arjun – Game & Level Designer" />
         <meta name="twitter:description" content="Portfolio of Kurapati Arjun showcasing level design, gameplay systems, and game projects." />
         <meta name="twitter:image" content={ogImageUrl} />
+        <meta name="twitter:creator" content="Kurapati Arjun" />
       </Helmet>
 
       {/* Loading screen */}
