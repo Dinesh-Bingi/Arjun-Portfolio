@@ -171,7 +171,10 @@ const ProjectsSection = () => {
         <Suspense fallback={null}>
           <ProjectModal
             project={selectedProject}
-            onClose={() => setSelectedProject(null)}
+            onClose={() => {
+              setSelectedProject(null);
+              window.dispatchEvent(new CustomEvent('closeProject'));
+            }}
           />
         </Suspense>
       )}

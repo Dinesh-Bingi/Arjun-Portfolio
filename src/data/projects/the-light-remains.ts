@@ -260,7 +260,7 @@ export const theLightRemains: Project = {
     // Experience the Level CTA
     {
       type: "levelExperienceCTA",
-      url: "https://drive.google.com/file/d/1hXjvYtQcRjVlYiQAn01dnbMiIA3kMGbl/view?usp=sharing",
+      url: "https://drive.google.com/file/d/1aEgpPglrWkskhGEPgo8PC8cxdhpDKehS/view?usp=sharing",
       imageUrl: "/images/cta-reference.png",
     },
     
