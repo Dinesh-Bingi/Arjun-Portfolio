@@ -14,19 +14,26 @@ export const useBackButtonHandler = () => {
 
   useEffect(() => {
     // Track modal state via custom events
-    const handleOpenProject = () => {
+    const handleOpenProject = (event: CustomEvent<{ projectId: string }>) => {
       setIsModalOpen(true);
       
       // ALWAYS create a history entry when project opens
       // This ensures back button from project view returns to landing page
-      // Always pushState (don't replace) to create a proper history stack
+      // Use pushState (NOT replaceState) to create a proper history stack
+      // Update URL to /projects/project-id for proper browser history
+      const projectUrl = `/projects/${event.detail.projectId}`;
       hasHistoryEntry.current = true;
       hasHandledBack.current = false;
-      window.history.pushState({ fromPortfolio: true, type: 'project' }, '', window.location.pathname);
+      window.history.pushState({ fromPortfolio: true, type: 'project', projectId: event.detail.projectId }, '', projectUrl);
     };
 
     const handleCloseProject = () => {
       setIsModalOpen(false);
+      // Update URL back to landing page when modal closes manually
+      // Use replaceState to avoid adding extra history entry when closing manually
+      if (window.location.pathname.startsWith('/projects/')) {
+        window.history.replaceState(null, '', '/');
+      }
       // Don't reset history flags here - they'll be reset when back navigation is handled
       // This allows proper back button behavior even if modal is closed manually
     };
@@ -49,10 +56,19 @@ export const useBackButtonHandler = () => {
     // Handle popstate (back button)
     const handlePopState = (event: PopStateEvent) => {
       // Check the state we're navigating to
-      const state = event.state as { fromPortfolio?: boolean; handled?: boolean; type?: string } | null;
+      const state = event.state as { fromPortfolio?: boolean; handled?: boolean; type?: string; projectId?: string } | null;
       
       // If this is our "handled" state (pushed back after first back press), ignore it
       if (state?.handled) {
+        return;
+      }
+
+      // Check current URL - if it's no longer a project URL, close modal
+      const currentPath = window.location.pathname;
+      if (!currentPath.startsWith('/projects/') && isModalOpen) {
+        window.dispatchEvent(new CustomEvent('closeProject'));
+        hasHistoryEntry.current = false;
+        hasHandledBack.current = false;
         return;
       }
 
@@ -77,8 +93,8 @@ export const useBackButtonHandler = () => {
           window.dispatchEvent(new CustomEvent('closeProject'));
           // Scroll to top
           window.scrollTo({ top: 0, behavior: 'smooth' });
-          // Push state back to keep user on page
-          window.history.pushState({ fromPortfolio: true, handled: true }, '', window.location.pathname);
+          // Restore URL to landing page and push state back to keep user on page
+          window.history.pushState({ fromPortfolio: true, handled: true }, '', '/');
           return;
         }
       }

@@ -151,6 +151,19 @@ const ProjectsSection = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
+    // Check URL on mount to open project if URL is /projects/project-id
+    const pathname = window.location.pathname;
+    if (pathname.startsWith('/projects/')) {
+      const projectId = pathname.replace('/projects/', '');
+      const project = projects.find(p => p.id === projectId);
+      if (project) {
+        setSelectedProject(project);
+      } else {
+        // Invalid project ID in URL, redirect to home
+        window.history.replaceState(null, '', '/');
+      }
+    }
+
     const handleOpenProject = (event: CustomEvent<{ projectId: string }>) => {
       const project = projects.find(p => p.id === event.detail.projectId);
       if (project) {
