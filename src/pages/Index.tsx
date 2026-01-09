@@ -19,11 +19,7 @@ const Index = () => {
   
   // Get absolute URL for og:image
   const ogImageUrl = useMemo(() => {
-    if (typeof window !== 'undefined') {
-      return `${window.location.origin}/images/og-image.png`;
-    }
-    // Fallback to production URL for SSR/build time
-    return 'https://arjunkurapati.com/images/og-image.png';
+    return 'https://arjunkurapati.com/og-image.jpg';
   }, []);
 
   return (
