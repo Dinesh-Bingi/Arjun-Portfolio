@@ -72,12 +72,69 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
         // Pause video while loading screen is visible
         videoRef.current.pause();
       } else {
-        // Start video playback when loading completes
-        videoRef.current.play().catch(() => {
+        // Start video playback when loading completes (only if on landing page)
+        const isLandingPage = window.location.pathname === '/';
+        if (isLandingPage) {
+          videoRef.current.play().catch(() => {
+            // Ignore autoplay errors
+          });
+        }
+      }
+    }
+  }, [isLoading]);
+
+  // Control video playback based on route/URL changes
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const updateVideoPlayback = () => {
+      const pathname = window.location.pathname;
+      const isLandingPage = pathname === '/';
+      
+      if (isLandingPage && !isLoading) {
+        // Resume video when on landing page
+        video.play().catch(() => {
+          // Ignore autoplay errors (browser may block autoplay)
+        });
+      } else {
+        // Pause video when navigating away from landing page
+        video.pause();
+      }
+    };
+
+    // Handle popstate (browser back/forward buttons)
+    const handlePopState = () => {
+      updateVideoPlayback();
+    };
+
+    // Handle project open/close events
+    const handleProjectOpen = () => {
+      video.pause();
+    };
+
+    const handleProjectClose = () => {
+      const pathname = window.location.pathname;
+      if (pathname === '/' && !isLoading) {
+        video.play().catch(() => {
           // Ignore autoplay errors
         });
       }
-    }
+    };
+
+    // Initial check
+    updateVideoPlayback();
+
+    // Listen to navigation events
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('openProject', handleProjectOpen as EventListener);
+    window.addEventListener('closeProject', handleProjectClose);
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('openProject', handleProjectOpen as EventListener);
+      window.removeEventListener('closeProject', handleProjectClose);
+    };
   }, [isLoading]);
 
   // Register hero video for single-play management
