@@ -235,8 +235,7 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
           className="absolute inset-0 w-full h-full object-cover z-0"
           style={{ pointerEvents: 'none' }}
         >
-          <source src="/videos/hero-background.webm" type="video/webm" />
-          <source src="/videos/hero-background.mp4" type="video/mp4" />
+          <source src={`${import.meta.env.BASE_URL}videos/hero-background.mp4`} type="video/mp4" />
         </video>
 
         {/* Soft gradient background overlay */}
