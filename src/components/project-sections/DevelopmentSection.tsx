@@ -24,6 +24,7 @@ const SabershotProductionVideo = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const wasPlayingRef = useRef(false); // Track if video was playing before visibility change
 
   // Reset video when project changes
   useEffect(() => {
@@ -35,6 +36,7 @@ const SabershotProductionVideo = ({
       unregisterVideo(video);
       setIsVisible(false);
       setHasError(false);
+      wasPlayingRef.current = false; // Reset playback tracking
     }
   }, [projectId, src]);
 
@@ -74,6 +76,72 @@ const SabershotProductionVideo = ({
       video.removeEventListener("play", handlePlay);
       unregisterVideo(video);
     };
+  }, [isVisible]);
+
+  // Track playback state to resume only if video was previously playing
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isVisible) return;
+
+    const handlePlay = () => {
+      wasPlayingRef.current = true;
+    };
+
+    const handlePause = () => {
+      // Only mark as not playing if pause wasn't caused by visibility change
+      if (document.visibilityState === 'visible') {
+        wasPlayingRef.current = false;
+      }
+    };
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+    };
+  }, [isVisible]);
+
+  // Handle video resume when tab becomes visible (Page Visibility API)
+  // Browser automatically pauses on hide - we resume immediately on show for maximum continuity
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isVisible) return;
+
+    const handleVisibilityChange = () => {
+      // Only handle visibility becoming visible - let browser handle pause naturally
+      if (document.visibilityState === 'visible') {
+        // Resume immediately if video was playing, is paused, and not ended
+        if (wasPlayingRef.current && video.paused && !video.ended) {
+          // Immediate resume attempt - no delays for strongest continuity
+          if (video.readyState >= 2) {
+            video.play().catch(() => {
+              // Gracefully handle autoplay restrictions
+            });
+          } else {
+            // If not ready, wait for canplay and resume immediately
+            const handleCanPlay = () => {
+              video.play().catch(() => {});
+              video.removeEventListener('canplay', handleCanPlay);
+            };
+            video.addEventListener('canplay', handleCanPlay, { once: true });
+            // Also try to load if needed
+            if (video.readyState === 0) {
+              video.load();
+            }
+          }
+        }
+      } else {
+        // Tab hidden - track that video was playing before browser pauses it
+        if (!video.paused) {
+          wasPlayingRef.current = true;
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [isVisible]);
 
   return (
@@ -136,6 +204,87 @@ const SabershotProductionVideo = ({
 };
 
 const DevelopmentSection = ({ section, projectId }: DevelopmentSectionProps) => {
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Handle visibility for inline videos without refs (Page Visibility API)
+  // Track playback state per video using data attribute for maximum continuity
+  useEffect(() => {
+    if (!sectionRef.current) return;
+
+    const handleVisibilityChange = () => {
+      // Only handle visibility becoming visible - let browser handle pause naturally
+      if (document.visibilityState === 'visible') {
+        const videos = sectionRef.current?.querySelectorAll('video[autoplay]') as NodeListOf<HTMLVideoElement>;
+        if (!videos || videos.length === 0) return;
+
+        videos.forEach((video) => {
+          // Resume immediately if video was playing (tracked via data attribute), is paused, and not ended
+          const wasPlaying = video.dataset.wasPlaying === 'true';
+          if (wasPlaying && video.paused && !video.ended && video.hasAttribute('autoplay')) {
+            // Immediate resume attempt - no delays for strongest continuity
+            if (video.readyState >= 2) {
+              video.play().catch(() => {
+                // Gracefully handle autoplay restrictions
+              });
+            } else {
+              // If not ready, wait for canplay and resume immediately
+              const handleCanPlay = () => {
+                video.play().catch(() => {});
+                video.removeEventListener('canplay', handleCanPlay);
+              };
+              video.addEventListener('canplay', handleCanPlay, { once: true });
+              // Also try to load if needed
+              if (video.readyState === 0) {
+                video.load();
+              }
+            }
+          }
+        });
+      } else {
+        // Tab hidden - track which videos were playing before browser pauses them
+        const videos = sectionRef.current?.querySelectorAll('video[autoplay]') as NodeListOf<HTMLVideoElement>;
+        videos?.forEach((video) => {
+          if (!video.paused) {
+            video.dataset.wasPlaying = 'true';
+          }
+        });
+      }
+    };
+
+    // Also track play/pause events to update wasPlaying state
+    const handlePlay = (e: Event) => {
+      const video = e.target as HTMLVideoElement;
+      if (document.visibilityState === 'visible') {
+        video.dataset.wasPlaying = 'true';
+      }
+    };
+
+    const handlePause = (e: Event) => {
+      const video = e.target as HTMLVideoElement;
+      // Only clear flag if pause is user-initiated (not visibility-related)
+      if (document.visibilityState === 'visible') {
+        video.dataset.wasPlaying = 'false';
+      }
+    };
+
+    const videos = sectionRef.current.querySelectorAll('video[autoplay]');
+    videos.forEach((video) => {
+      video.addEventListener('play', handlePlay);
+      video.addEventListener('pause', handlePause);
+    });
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      videos.forEach((video) => {
+        video.removeEventListener('play', handlePlay);
+        video.removeEventListener('pause', handlePause);
+      });
+    };
+  }, []);
+
+  // ... rest of component
   // Sections that should use minimal subtitles instead of large title pills
   // Note: "Planning & Development Breakdown" and "Production & Process" are now subsections,
   // so they automatically use the vertical line subtitle style
@@ -188,7 +337,7 @@ const DevelopmentSection = ({ section, projectId }: DevelopmentSectionProps) => 
     subsection.media?.type === "video";
 
   return (
-    <div className={`${isPuddleWhispersDesignTechniques ? 'mt-8 mb-6' : 'mt-12 mb-8'} ${(isJustMyDuckPreProduction || isJustMyDuckPostMortem) ? 'max-w-[1000px] mx-auto' : ''}`}>
+    <div ref={sectionRef} className={`${isPuddleWhispersDesignTechniques ? 'mt-8 mb-6' : 'mt-12 mb-8'} ${(isJustMyDuckPreProduction || isJustMyDuckPostMortem) ? 'max-w-[1000px] mx-auto' : ''}`}>
       {useMinimalTitle ? (
         // Minimal subtitle style
         <div className="flex items-center gap-3 mb-4">

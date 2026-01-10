@@ -11,6 +11,8 @@ export default defineConfig(({ mode }) => ({
   },
   preview: {
     port: 8080,
+    // Ensure preview server handles SPA routing (serves index.html for all routes)
+    // This is important for testing production builds locally
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
   resolve: {

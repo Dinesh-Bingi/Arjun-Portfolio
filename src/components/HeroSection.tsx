@@ -172,16 +172,37 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
     };
   }, []);
 
-  // Handle video pause when tab is inactive
+  // Handle video pause/resume when tab visibility changes (Page Visibility API)
   useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
     const handleVisibilityChange = () => {
-      if (videoRef.current && !isLoading) {
-        if (document.hidden) {
-          videoRef.current.pause();
-        } else {
-          videoRef.current.play().catch(() => {
-            // Ignore autoplay errors
-          });
+      if (document.hidden) {
+        // Tab became hidden - pause video (browser does this automatically, but we ensure it)
+        if (!video.paused) {
+          video.pause();
+        }
+      } else {
+        // Tab became visible - resume video if we're on the landing page
+        const pathname = window.location.pathname;
+        const isLandingPage = pathname === '/';
+        
+        if (isLandingPage && !isLoading && video.paused && !video.ended) {
+          // Only resume if video was paused (not ended) and we're on landing page
+          // Ensure video is ready before playing
+          if (video.readyState >= 2) {
+            video.play().catch(() => {
+              // Ignore autoplay errors (browser may block autoplay)
+            });
+          } else {
+            // Wait for video to be ready
+            const handleCanPlay = () => {
+              video.play().catch(() => {});
+              video.removeEventListener('canplay', handleCanPlay);
+            };
+            video.addEventListener('canplay', handleCanPlay);
+          }
         }
       }
     };

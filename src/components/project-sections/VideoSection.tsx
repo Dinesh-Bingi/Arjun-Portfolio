@@ -12,6 +12,7 @@ const VideoSection = ({ section, projectId }: VideoSectionProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const wasPlayingRef = useRef(false); // Track if video was playing before visibility change
 
   // Reset video when section or project changes (project switch)
   useEffect(() => {
@@ -20,6 +21,7 @@ const VideoSection = ({ section, projectId }: VideoSectionProps) => {
     // Reset state when video URL or project changes
     setIsVisible(false);
     setIsLoaded(false);
+    wasPlayingRef.current = false; // Reset playback tracking
 
     if (video) {
       // Reset video when section or project changes
@@ -36,6 +38,7 @@ const VideoSection = ({ section, projectId }: VideoSectionProps) => {
         video.currentTime = 0;
         unregisterVideo(video);
       }
+      wasPlayingRef.current = false;
     };
   }, [section.videoUrl, projectId]); // Reset when video URL or project changes
 
@@ -93,6 +96,73 @@ const VideoSection = ({ section, projectId }: VideoSectionProps) => {
       unregisterVideo(video);
     };
   }, [isVisible, section.autoPlay]);
+
+  // Track playback state to resume only if video was previously playing
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isVisible) return;
+
+    const handlePlay = () => {
+      wasPlayingRef.current = true;
+    };
+
+    const handlePause = () => {
+      // Only mark as not playing if pause wasn't caused by visibility change
+      // If visibility state is visible, this pause is likely user-initiated
+      if (document.visibilityState === 'visible') {
+        wasPlayingRef.current = false;
+      }
+    };
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+    };
+  }, [isVisible]);
+
+  // Handle video resume when tab becomes visible (Page Visibility API)
+  // Browser automatically pauses on hide - we resume immediately on show for maximum continuity
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isVisible) return;
+
+    const handleVisibilityChange = () => {
+      // Only handle visibility becoming visible - let browser handle pause naturally
+      if (document.visibilityState === 'visible') {
+        // Resume immediately if video was playing, is paused, not ended, and should autoplay
+        if (wasPlayingRef.current && video.paused && !video.ended && section.autoPlay !== false && isLoaded) {
+          // Immediate resume attempt - no delays for strongest continuity
+          if (video.readyState >= 2) {
+            video.play().catch(() => {
+              // Gracefully handle autoplay restrictions
+            });
+          } else {
+            // If not ready, wait for canplay and resume immediately
+            const handleCanPlay = () => {
+              video.play().catch(() => {});
+              video.removeEventListener('canplay', handleCanPlay);
+            };
+            video.addEventListener('canplay', handleCanPlay, { once: true });
+            // Also try to load if needed
+            if (video.readyState === 0) {
+              video.load();
+            }
+          }
+        }
+      } else {
+        // Tab hidden - track that video was playing before browser pauses it
+        if (!video.paused) {
+          wasPlayingRef.current = true;
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [isVisible, isLoaded, section.autoPlay]);
 
   // Show placeholder if video URL is empty
   if (!section.videoUrl || section.videoUrl.trim() === "") {
