@@ -2,6 +2,7 @@ import { DevelopmentSection as DevelopmentSectionType } from "@/data/projects/ty
 import HighlightedText from "./HighlightedText";
 import { registerVideo, unregisterVideo } from "@/utils/videoManager";
 import { useEffect, useRef, useState } from "react";
+import { Play } from "lucide-react";
 
 interface DevelopmentSectionProps {
   section: DevelopmentSectionType;
@@ -25,6 +26,7 @@ const SabershotProductionVideo = ({
   const [isVisible, setIsVisible] = useState(false);
   const [hasError, setHasError] = useState(false);
   const wasPlayingRef = useRef(false); // Track if video was playing before visibility change
+  const [showPlayOverlay, setShowPlayOverlay] = useState(false); // Track if play overlay should be visible
 
   // Reset video when project changes
   useEffect(() => {
@@ -144,10 +146,59 @@ const SabershotProductionVideo = ({
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [isVisible]);
 
+  // Track video play/pause state for overlay visibility
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || !isVisible) return;
+
+    const handlePlay = () => {
+      setShowPlayOverlay(false); // Hide overlay when playing
+    };
+
+    const handlePause = () => {
+      // Only show overlay if video is paused and not ended
+      setShowPlayOverlay(video.paused && !video.ended);
+    };
+
+    const handleEnded = () => {
+      setShowPlayOverlay(false); // Hide overlay when video ends
+    };
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('ended', handleEnded);
+
+    // Initialize overlay state
+    setShowPlayOverlay(video.paused && !video.ended);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, [isVisible]);
+
+  // Handle click-to-play/pause for video
+  const handleVideoClick = () => {
+    const video = videoRef.current;
+    if (!video || !isVisible) return;
+
+    if (video.paused) {
+      wasPlayingRef.current = true; // User wants to play - update tracking
+      setShowPlayOverlay(false); // Hide overlay immediately
+      video.play().catch(() => {
+        // Ignore autoplay errors
+      });
+    } else {
+      wasPlayingRef.current = false; // User manually paused - update tracking
+      video.pause();
+    }
+  };
+
   return (
     <div 
       ref={containerRef}
-      className="overflow-hidden sabershot-production-video"
+      className="overflow-hidden sabershot-production-video relative"
       style={{
         borderRadius: '14px',
         border: '1px solid rgba(168, 85, 247, 0.25)',
@@ -155,31 +206,46 @@ const SabershotProductionVideo = ({
       }}
     >
       {isVisible && !hasError ? (
-        <video
-          ref={videoRef}
-          src={src}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          disablePictureInPicture
-          controlsList="nodownload nofullscreen noremoteplayback"
-          className="w-full h-full object-cover"
-          style={{
-            display: 'block',
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            pointerEvents: 'none',
-          }}
-          onPlay={(e) => registerVideo(e.currentTarget)}
-          onLoadedData={(e) => registerVideo(e.currentTarget)}
-          onError={() => {
-            setHasError(true);
-          }}
-          aria-label={placeholder || "Production process video"}
-        />
+        <>
+          <video
+            ref={videoRef}
+            src={src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="metadata"
+            disablePictureInPicture
+            controlsList="nodownload nofullscreen noremoteplayback"
+            className="w-full h-full object-cover cursor-pointer"
+            style={{
+              display: 'block',
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+            onClick={handleVideoClick}
+            onPlay={(e) => registerVideo(e.currentTarget)}
+            onLoadedData={(e) => registerVideo(e.currentTarget)}
+            onError={() => {
+              setHasError(true);
+            }}
+            aria-label={placeholder || "Production process video"}
+          />
+          
+          {/* Play icon overlay - only visible when paused */}
+          {showPlayOverlay && (
+            <div
+              className="absolute inset-0 flex items-center justify-center cursor-pointer z-10"
+              onClick={handleVideoClick}
+              aria-label="Play video"
+            >
+              <div className="w-16 h-16 rounded-full bg-primary/80 flex items-center justify-center transition-opacity duration-200 hover:bg-primary/90">
+                <Play className="w-8 h-8 text-background fill-background ml-1" />
+              </div>
+            </div>
+          )}
+        </>
       ) : hasError && fallbackImage ? (
         <img
           src={fallbackImage}
@@ -205,6 +271,47 @@ const SabershotProductionVideo = ({
 
 const DevelopmentSection = ({ section, projectId }: DevelopmentSectionProps) => {
   const sectionRef = useRef<HTMLDivElement>(null);
+
+  // Handle click-to-play/pause for inline videos
+  const handleInlineVideoClick = (e: React.MouseEvent<HTMLVideoElement>) => {
+    const video = e.currentTarget;
+    if (video.paused) {
+      video.dataset.wasPlaying = 'true'; // User wants to play - update tracking
+      // Hide overlay immediately
+      const overlay = video.parentElement?.querySelector('.video-play-overlay') as HTMLElement;
+      if (overlay) overlay.style.display = 'none';
+      video.play().catch(() => {
+        // Ignore autoplay errors
+      });
+    } else {
+      video.dataset.wasPlaying = 'false'; // User manually paused - update tracking
+      video.pause();
+    }
+  };
+
+  // Helper to handle inline video play/pause events for overlay
+  const handleInlineVideoPlay = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = e.currentTarget;
+    const overlay = video.parentElement?.querySelector('.video-play-overlay') as HTMLElement;
+    if (overlay) overlay.style.display = 'none';
+  };
+
+  const handleInlineVideoPause = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = e.currentTarget;
+    const overlay = video.parentElement?.querySelector('.video-play-overlay') as HTMLElement;
+    // Only show overlay if video is paused and not ended
+    if (overlay && video.paused && !video.ended) {
+      overlay.style.display = 'flex';
+    } else if (overlay) {
+      overlay.style.display = 'none';
+    }
+  };
+
+  const handleInlineVideoEnded = (e: React.SyntheticEvent<HTMLVideoElement>) => {
+    const video = e.currentTarget;
+    const overlay = video.parentElement?.querySelector('.video-play-overlay') as HTMLElement;
+    if (overlay) overlay.style.display = 'none';
+  };
 
   // Handle visibility for inline videos without refs (Page Visibility API)
   // Track playback state per video using data attribute for maximum continuity
@@ -638,29 +745,56 @@ const DevelopmentSection = ({ section, projectId }: DevelopmentSectionProps) => 
                           </>
                         ) : (
                           // Default video styling (Echoes of Stella)
-                          <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">
+                          <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2 relative">
                             {subsection.media.src ? (
-                              <video
-                                src={subsection.media.src}
-                                autoPlay
-                                muted
-                                loop
-                                playsInline
-                                preload="metadata"
-                                disablePictureInPicture
-                                controlsList="nodownload nofullscreen noremoteplayback"
-                                className="w-full h-auto object-cover rounded-lg"
-                                style={{
-                                  width: '100%',
-                                  height: '100%',
-                                  objectFit: 'cover',
-                                  borderRadius: 'inherit',
-                                  pointerEvents: 'none',
-                                }}
-                                onPlay={(e) => registerVideo(e.currentTarget)}
-                                onLoadedData={(e) => registerVideo(e.currentTarget)}
-                                aria-label={subsection.media.placeholder || "Production process video"}
-                              />
+                              <>
+                                <video
+                                  src={subsection.media.src}
+                                  autoPlay
+                                  muted
+                                  loop
+                                  playsInline
+                                  preload="metadata"
+                                  disablePictureInPicture
+                                  controlsList="nodownload nofullscreen noremoteplayback"
+                                  className="w-full h-auto object-cover rounded-lg cursor-pointer"
+                                  style={{
+                                    width: '100%',
+                                    height: '100%',
+                                    objectFit: 'cover',
+                                    borderRadius: 'inherit',
+                                  }}
+                                  onClick={handleInlineVideoClick}
+                                  onPlay={(e) => {
+                                    handleInlineVideoPlay(e);
+                                    registerVideo(e.currentTarget);
+                                    e.currentTarget.dataset.wasPlaying = 'true';
+                                  }}
+                                  onPause={handleInlineVideoPause}
+                                  onEnded={handleInlineVideoEnded}
+                                  onLoadedData={(e) => {
+                                    registerVideo(e.currentTarget);
+                                    // Initialize overlay state
+                                    const video = e.currentTarget;
+                                    const overlay = video.parentElement?.querySelector('.video-play-overlay') as HTMLElement;
+                                    if (overlay) {
+                                      overlay.style.display = (video.paused && !video.ended) ? 'flex' : 'none';
+                                    }
+                                  }}
+                                  aria-label={subsection.media.placeholder || "Production process video"}
+                                />
+                                {/* Play icon overlay - only visible when paused */}
+                                <div
+                                  className="video-play-overlay absolute inset-0 flex items-center justify-center cursor-pointer z-10 rounded-lg"
+                                  onClick={handleInlineVideoClick}
+                                  style={{ display: 'none' }}
+                                  aria-label="Play video"
+                                >
+                                  <div className="w-12 h-12 rounded-full bg-primary/80 flex items-center justify-center transition-opacity duration-200 hover:bg-primary/90">
+                                    <Play className="w-6 h-6 text-background fill-background ml-0.5" />
+                                  </div>
+                                </div>
+                              </>
                             ) : (
                               <div className="w-full h-64 bg-muted/30 rounded-lg flex items-center justify-center">
                                 <p className="text-muted-foreground text-sm text-center px-4">
@@ -822,7 +956,7 @@ const DevelopmentSection = ({ section, projectId }: DevelopmentSectionProps) => 
                   {subsection.media && (
                     <>
                       {subsection.media.type === "video" ? (
-                        <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">
+                        <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2 relative">
                           <video
                             src={subsection.media.src}
                             autoPlay
@@ -832,18 +966,43 @@ const DevelopmentSection = ({ section, projectId }: DevelopmentSectionProps) => 
                             preload="metadata"
                             disablePictureInPicture
                             controlsList="nodownload nofullscreen noremoteplayback"
-                            className="w-full h-auto object-cover rounded-lg"
+                            className="w-full h-auto object-cover rounded-lg cursor-pointer"
                             style={{
                               width: '100%',
                               height: '100%',
                               objectFit: 'cover',
                               borderRadius: 'inherit',
-                              pointerEvents: 'none',
                             }}
-                            onPlay={(e) => registerVideo(e.currentTarget)}
-                            onLoadedData={(e) => registerVideo(e.currentTarget)}
+                            onClick={handleInlineVideoClick}
+                            onPlay={(e) => {
+                              handleInlineVideoPlay(e);
+                              registerVideo(e.currentTarget);
+                              e.currentTarget.dataset.wasPlaying = 'true';
+                            }}
+                            onPause={handleInlineVideoPause}
+                            onEnded={handleInlineVideoEnded}
+                            onLoadedData={(e) => {
+                              registerVideo(e.currentTarget);
+                              // Initialize overlay state
+                              const video = e.currentTarget;
+                              const overlay = video.parentElement?.querySelector('.video-play-overlay') as HTMLElement;
+                              if (overlay) {
+                                overlay.style.display = (video.paused && !video.ended) ? 'flex' : 'none';
+                              }
+                            }}
                             aria-label={subsection.media.src.includes("production-process") ? "Echoes of Stella production process" : "Level design process showing blockout, iteration, and playtesting"}
                           />
+                          {/* Play icon overlay - only visible when paused */}
+                          <div
+                            className="video-play-overlay absolute inset-0 flex items-center justify-center cursor-pointer z-10 rounded-lg"
+                            onClick={handleInlineVideoClick}
+                            style={{ display: 'none' }}
+                            aria-label="Play video"
+                          >
+                            <div className="w-12 h-12 rounded-full bg-primary/80 flex items-center justify-center transition-opacity duration-200 hover:bg-primary/90">
+                              <Play className="w-6 h-6 text-background fill-background ml-0.5" />
+                            </div>
+                          </div>
                         </div>
                       ) : subsection.media.src ? (
                         <div className="w-full max-w-xs overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">
@@ -870,7 +1029,7 @@ const DevelopmentSection = ({ section, projectId }: DevelopmentSectionProps) => 
                   {consecutiveMediaSubsections.map((mediaSubsection, mediaIndex) => (
                     <div key={`media-${index}-${mediaIndex}`} className="w-full max-w-xs">
                       {mediaSubsection.media?.type === "video" ? (
-                        <div className="w-full overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">
+                        <div className="w-full overflow-hidden rounded-lg border border-border/50 shadow-lg p-2 relative">
                           <video
                             src={mediaSubsection.media.src}
                             autoPlay
@@ -880,12 +1039,37 @@ const DevelopmentSection = ({ section, projectId }: DevelopmentSectionProps) => 
                             preload="metadata"
                             disablePictureInPicture
                             controlsList="nodownload nofullscreen noremoteplayback"
-                            className="w-full h-auto object-cover"
-                            style={{ pointerEvents: 'none' }}
-                            onPlay={(e) => registerVideo(e.currentTarget)}
-                            onLoadedData={(e) => registerVideo(e.currentTarget)}
+                            className="w-full h-auto object-cover cursor-pointer rounded-lg"
+                            onClick={handleInlineVideoClick}
+                            onPlay={(e) => {
+                              handleInlineVideoPlay(e);
+                              registerVideo(e.currentTarget);
+                              e.currentTarget.dataset.wasPlaying = 'true';
+                            }}
+                            onPause={handleInlineVideoPause}
+                            onEnded={handleInlineVideoEnded}
+                            onLoadedData={(e) => {
+                              registerVideo(e.currentTarget);
+                              // Initialize overlay state
+                              const video = e.currentTarget;
+                              const overlay = video.parentElement?.querySelector('.video-play-overlay') as HTMLElement;
+                              if (overlay) {
+                                overlay.style.display = (video.paused && !video.ended) ? 'flex' : 'none';
+                              }
+                            }}
                             aria-label="Level design process showing blockout, iteration, and playtesting"
                           />
+                          {/* Play icon overlay - only visible when paused */}
+                          <div
+                            className="video-play-overlay absolute inset-0 flex items-center justify-center cursor-pointer z-10 rounded-lg"
+                            onClick={handleInlineVideoClick}
+                            style={{ display: 'none' }}
+                            aria-label="Play video"
+                          >
+                            <div className="w-12 h-12 rounded-full bg-primary/80 flex items-center justify-center transition-opacity duration-200 hover:bg-primary/90">
+                              <Play className="w-6 h-6 text-background fill-background ml-0.5" />
+                            </div>
+                          </div>
                         </div>
                       ) : mediaSubsection.media?.src ? (
                         <div className="w-full overflow-hidden rounded-lg border border-border/50 shadow-lg p-2">

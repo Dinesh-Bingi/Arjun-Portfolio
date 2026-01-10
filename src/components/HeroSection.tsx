@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Play } from "lucide-react";
 import { useEffect, useState, useRef } from "react";
 import { registerVideo, unregisterVideo } from "@/utils/videoManager";
 
@@ -13,6 +13,8 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
   const dimensionsRef = useRef({ width: 1, height: 1 });
   const rafRef = useRef<number | null>(null);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const userPausedRef = useRef(false); // Track if user manually paused the video
+  const [showPlayOverlay, setShowPlayOverlay] = useState(false); // Track if play overlay should be visible
 
   useEffect(() => {
     // Cache dimensions on mount and resize
@@ -75,6 +77,7 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
         // Start video playback when loading completes (only if on landing page)
         const isLandingPage = window.location.pathname === '/';
         if (isLandingPage) {
+          userPausedRef.current = false; // Reset user pause state on load
           videoRef.current.play().catch(() => {
             // Ignore autoplay errors
           });
@@ -184,12 +187,12 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
           video.pause();
         }
       } else {
-        // Tab became visible - resume video if we're on the landing page
+        // Tab became visible - resume video if we're on the landing page and user didn't manually pause
         const pathname = window.location.pathname;
         const isLandingPage = pathname === '/';
         
-        if (isLandingPage && !isLoading && video.paused && !video.ended) {
-          // Only resume if video was paused (not ended) and we're on landing page
+        if (isLandingPage && !isLoading && video.paused && !video.ended && !userPausedRef.current) {
+          // Only resume if video was paused by browser (not user) and we're on landing page
           // Ensure video is ready before playing
           if (video.readyState >= 2) {
             video.play().catch(() => {
@@ -210,6 +213,55 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
     document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [isLoading]);
+
+  // Track video play/pause state for overlay visibility
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handlePlay = () => {
+      setShowPlayOverlay(false); // Hide overlay when playing
+    };
+
+    const handlePause = () => {
+      // Only show overlay if video is paused and not ended
+      setShowPlayOverlay(video.paused && !video.ended);
+    };
+
+    const handleEnded = () => {
+      setShowPlayOverlay(false); // Hide overlay when video ends
+    };
+
+    video.addEventListener('play', handlePlay);
+    video.addEventListener('pause', handlePause);
+    video.addEventListener('ended', handleEnded);
+
+    // Initialize overlay state
+    setShowPlayOverlay(video.paused && !video.ended);
+
+    return () => {
+      video.removeEventListener('play', handlePlay);
+      video.removeEventListener('pause', handlePause);
+      video.removeEventListener('ended', handleEnded);
+    };
+  }, []);
+
+  // Handle click-to-play/pause for hero video
+  const handleVideoClick = () => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (video.paused) {
+      userPausedRef.current = false; // User wants to play
+      setShowPlayOverlay(false); // Hide overlay immediately
+      video.play().catch(() => {
+        // Ignore autoplay errors
+      });
+    } else {
+      userPausedRef.current = true; // User manually paused
+      video.pause();
+    }
+  };
 
   // Delay animations until after first paint
   useEffect(() => {
@@ -232,11 +284,24 @@ const HeroSection = ({ isLoading }: HeroSectionProps) => {
           preload="metadata"
           disablePictureInPicture
           controlsList="nodownload nofullscreen noremoteplayback"
-          className="absolute inset-0 w-full h-full object-cover z-0"
-          style={{ pointerEvents: 'none' }}
+          className="absolute inset-0 w-full h-full object-cover z-0 cursor-pointer"
+          onClick={handleVideoClick}
         >
           <source src={`${import.meta.env.BASE_URL}videos/hero-background.mp4`} type="video/mp4" />
         </video>
+
+        {/* Play icon overlay - only visible when paused */}
+        {showPlayOverlay && (
+          <div
+            className="absolute inset-0 z-[2] flex items-center justify-center cursor-pointer"
+            onClick={handleVideoClick}
+            aria-label="Play video"
+          >
+            <div className="w-16 h-16 rounded-full bg-primary/80 flex items-center justify-center transition-opacity duration-200 hover:bg-primary/90">
+              <Play className="w-8 h-8 text-background fill-background ml-1" />
+            </div>
+          </div>
+        )}
 
         {/* Soft gradient background overlay */}
         <div className="absolute inset-0 z-[1]">
