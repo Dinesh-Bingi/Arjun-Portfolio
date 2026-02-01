@@ -2,7 +2,7 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}", "./data/**/*.{ts,tsx}", "./hooks/**/*.{ts,tsx}", "./lib/**/*.{ts,tsx}"],
   prefix: "",
   theme: {
     container: {
@@ -62,10 +62,11 @@ export default {
         },
       },
       fontFamily: {
-        display: ["Sora", "sans-serif"],
-        heading: ["Sora", "sans-serif"],
-        body: ["DM Sans", "sans-serif"],
-        accent: ["Instrument Serif", "serif"],
+        sans: ["var(--font-dm-sans)", "DM Sans", "sans-serif"],
+        display: ["var(--font-sora)", "Sora", "sans-serif"],
+        heading: ["var(--font-sora)", "Sora", "sans-serif"],
+        body: ["var(--font-dm-sans)", "DM Sans", "sans-serif"],
+        accent: ["var(--font-instrument-serif)", "Instrument Serif", "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
