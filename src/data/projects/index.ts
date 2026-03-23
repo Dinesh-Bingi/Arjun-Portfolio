@@ -13,9 +13,9 @@ import { letMeForget } from "./let-me-forget";
 
 // Export all projects
 export const projects: Project[] = [
-  theLostUnderworld,
+  // theLostUnderworld,
   theLightRemains,
-  letMeForget,
+  // letMeForget,
   metroDescent,
   sabershotJackOfAllBlades,
   puddleWhispers,
