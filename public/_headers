@@ -1,0 +1,3 @@
+# Cloudflare Pages SPA fallback
+# Note: Cloudflare Pages uses _redirects file (same as Netlify)
+# This _headers file is for additional headers if needed
