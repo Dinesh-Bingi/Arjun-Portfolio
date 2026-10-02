@@ -7,7 +7,7 @@ export interface ProjectBase {
   id: string;
   title: string;
   description: string;
-  category: "personal" | "group";
+  category: "personal" | "group" | "professional";
   icon: string;
   thumbnailImage?: string;
   coverImage?: string;

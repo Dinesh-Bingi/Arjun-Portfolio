@@ -18,11 +18,12 @@ const iconComponents: Record<string, React.ReactNode> = {
 
 interface ProjectSectionProps {
   category: Project["category"];
-  title: string;
+  title?: string;
   id: string;
+  showHeader?: boolean;
 }
 
-const ProjectSection = ({ category, title, id }: ProjectSectionProps) => {
+const ProjectSection = ({ category, title, id, showHeader = true }: ProjectSectionProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
   const categoryProjects = getProjectsByCategory(category);
@@ -53,7 +54,7 @@ const ProjectSection = ({ category, title, id }: ProjectSectionProps) => {
   const isSingleProject = validProjects.length === 1;
   
   // Consistent spacing for both sections
-  const paddingTop = category === "personal" ? "pt-16" : "pt-16";
+  const paddingTop = category === "professional" ? "pt-4" : "pt-16";
   const paddingBottom = "pb-20";
 
   // Don't render section if no valid projects
@@ -70,29 +71,35 @@ const ProjectSection = ({ category, title, id }: ProjectSectionProps) => {
 
       <div className="max-w-7xl mx-auto relative">
         <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
-          <div className="flex items-center justify-center gap-4 mb-4">
-            <div className="w-12 h-px bg-gradient-to-r from-transparent to-primary" />
-            <span className="font-heading text-sm tracking-[0.2em] text-primary uppercase">
-              Portfolio
-            </span>
-            <div className="w-12 h-px bg-gradient-to-l from-transparent to-primary" />
-          </div>
-          <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4 relative">
-            <span className="relative z-10">{title}</span>
-            <span 
-              className="absolute inset-0 blur-2xl opacity-40 bg-gradient-to-r from-primary/50 via-purple-400/40 to-pink-400/30 -z-10"
-              aria-hidden="true"
-            />
-          </h2>
-          <p className="font-body text-muted-foreground max-w-lg mx-auto">
-            Select a project to explore the design process and final implementation
-          </p>
-        </motion.div>
+  className="mb-16 text-center"
+  initial={{ opacity: 0, y: 30 }}
+  animate={isInView ? { opacity: 1, y: 0 } : {}}
+  transition={{ duration: 0.8 }}
+>
+  {showHeader && title && (
+    <>
+      <div className="flex items-center justify-center gap-4 mb-4">
+        <div className="w-12 h-px bg-gradient-to-r from-transparent to-primary" />
+        <span className="font-heading text-sm tracking-[0.2em] text-primary uppercase">
+          Portfolio
+        </span>
+        <div className="w-12 h-px bg-gradient-to-l from-transparent to-primary" />
+      </div>
+
+      <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4 relative">
+        <span className="relative z-10">{title}</span>
+        <span 
+          className="absolute inset-0 blur-2xl opacity-40 bg-gradient-to-r from-primary/50 via-purple-400/40 to-pink-400/30 -z-10"
+          aria-hidden="true"
+        />
+      </h2>
+    </>
+  )}
+
+  <p className="font-body text-muted-foreground max-w-lg mx-auto">
+    Select a project to explore the design process and final implementation
+  </p>
+</motion.div>
 
         <div className={isSingleProject 
           ? "grid grid-cols-1 justify-items-center gap-6 md:gap-8 items-stretch" 
@@ -195,7 +202,29 @@ const ProjectsSection = () => {
   }, []);
 
   return (
-    <>
+    <><section className="relative pt-20 pb-4 px-6">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center">
+      <div className="flex items-center justify-center gap-4 mb-4">
+        <div className="w-12 h-px bg-gradient-to-r from-transparent to-primary" />
+        <span className="font-heading text-sm tracking-[0.2em] text-primary uppercase">
+          Portfolio
+        </span>
+        <div className="w-12 h-px bg-gradient-to-l from-transparent to-primary" />
+      </div>
+
+      <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground">
+        Professional Work
+      </h2>
+    </div>
+  </div>
+</section>
+      <ProjectSection
+  category="professional"
+  title=""
+  id="professional-work"
+  showHeader={false}
+/>
       <ProjectSection category="personal" title="Personal Projects" id="personal-projects" />
       <ProjectSection category="group" title="Group Projects" id="group-projects" />
 

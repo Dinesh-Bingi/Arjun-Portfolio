@@ -10,9 +10,10 @@ import { sushi2Go } from "./sushi-2-go";
 import { puddleWhispers } from "./puddle-whispers";
 import { theLostUnderworld } from "./the-lost-underworld";
 import { letMeForget } from "./let-me-forget";
-
+import { yokaiTalesFox } from "./yokai-tales-fox";
 // Export all projects
 export const projects: Project[] = [
+  yokaiTalesFox,
   theLostUnderworld,
   theLightRemains,
   letMeForget,
