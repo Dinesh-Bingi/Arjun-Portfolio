@@ -2,6 +2,13 @@ import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
 
 const experiences = [
+    {
+    period: "2026 – Present",
+    title: "Level Designer Intern",
+    company: "Silkroad Studios",
+    location: "Denmark • Remote",
+    description: "Designing parkour-focused levels and traversal spaces, with a focus on player flow, movement routes, encounter design, and gameplay spaces using Unreal Engine.",
+  },
   {
     period: "2024 – Present",
     title: "Game Design Student (Systems Design Specialization)",
