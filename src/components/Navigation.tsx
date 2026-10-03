@@ -13,9 +13,10 @@ interface NavLink {
 
 const navLinks: NavLink[] = [
   { label: "Home", href: "#home" },
+  { label: "Professional Work", href: "#professional-work" },
   { label: "Personal Projects", href: "#personal-projects", hasDropdown: true, category: "personal" },
   { label: "Group Projects", href: "#group-projects", hasDropdown: true, category: "group" },
-  { label: "My Journey", href: "#professional-work" },
+  { label: "My Journey", href: "#my-journey" },
   { label: "About", href: "#about" },
   { label: "Resume", href: "/Arjun_Resume.pdf", isExternal: true },
   { label: "Contact", href: "#contact" },
@@ -50,13 +51,24 @@ const Navigation = () => {
     if (link.isExternal) {
       window.open(link.href, "_blank");
     } else if (link.href === "#home") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    } else {
-      const element = document.querySelector(link.href);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
-    }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+} else if (
+  link.href === "#personal-projects" ||
+  link.href === "#group-projects"
+) {
+  const element = document.querySelector(link.href);
+  if (element) {
+    element.scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+    });
+  }
+} else {
+  const element = document.querySelector(link.href);
+  if (element) {
+    element.scrollIntoView({ behavior: "smooth" });
+  }
+}
   };
 
   const handleProjectClick = (projectId: string) => {

@@ -63,7 +63,11 @@ const ProjectSection = ({ category, title, id, showHeader = true }: ProjectSecti
   }
 
   return (
-    <section className={`relative ${paddingTop} ${paddingBottom} px-6`} id={id} ref={ref}>
+    <section
+  className={`relative ${paddingTop} ${paddingBottom} px-6 ${category === "personal" ? "scroll-mt-20" : ""}`}
+  id={id}
+  ref={ref}
+>
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute top-1/4 -left-20 w-40 h-40 bg-primary/5 rounded-full blur-[100px]" />
         <div className="absolute bottom-1/4 -right-20 w-60 h-60 bg-primary/3 rounded-full blur-[120px]" />
@@ -202,7 +206,7 @@ const ProjectsSection = () => {
   }, []);
 
   return (
-    <><section className="relative pt-20 pb-4 px-6">
+    <><section id="professional-work" className="relative pt-20 pb-4 px-6 scroll-mt-20">
   <div className="max-w-7xl mx-auto">
     <div className="text-center">
       <div className="flex items-center justify-center gap-4 mb-4">
@@ -222,7 +226,6 @@ const ProjectsSection = () => {
       <ProjectSection
   category="professional"
   title=""
-  id="professional-work"
   showHeader={false}
 />
       <ProjectSection category="personal" title="Personal Projects" id="personal-projects" />

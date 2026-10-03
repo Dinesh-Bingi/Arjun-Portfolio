@@ -90,7 +90,7 @@ const Index = () => {
           
           <EnvironmentArtSection />
           
-          <div id="professional-work">
+          <div id="my-journey" className="scroll-mt-20">
             <ExperienceSection />
           </div>
           

@@ -71,7 +71,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
             {/* Hero Cover Section - Only for Echoes of Stella */}
             {isEchoesOfStella && project.coverImage && (
               <motion.div
-                className="relative w-full h-32 md:h-48 mt-12 overflow-hidden"
+                className="relative w-full h-40 md:h-64 mt-12 overflow-hidden"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
@@ -82,7 +82,7 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
                   style={{
                     backgroundImage: `url(${project.coverImage})`,
                     backgroundSize: 'cover',
-                    backgroundPosition: 'center',
+                    backgroundPosition: 'center 55%',
                     backgroundRepeat: 'no-repeat',
                   }}
                 />
@@ -102,11 +102,11 @@ const ProjectModal = ({ project, onClose }: ProjectModalProps) => {
 
             {/* Header area - with top padding for fixed nav (hidden for Echoes of Stella) */}
             {!isEchoesOfStella && (
-            <div className="relative h-32 md:h-48 bg-primary/10 flex items-center justify-center overflow-hidden p-0 mt-12">
+            <div className="relative h-40 md:h-64 bg-primary/10 flex items-center justify-center overflow-hidden p-0 mt-12">
               <img
                 src={project.coverImage || "/placeholder.svg"}
                 alt={project.title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover scale-[1.06] object-center"
               />
 
               {/* HUD elements */}

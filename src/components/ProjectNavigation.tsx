@@ -24,7 +24,7 @@ const navLinks: ProjectNavLink[] = [{
   category: "group"
 }, {
   label: "My Journey",
-  href: "#my-Journey"
+  href: "#my-journey"
 }, {
   label: "About",
   href: "#about"

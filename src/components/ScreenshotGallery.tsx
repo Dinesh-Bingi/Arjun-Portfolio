@@ -4,10 +4,12 @@ import { motion, AnimatePresence } from "framer-motion";
 interface ScreenshotGalleryProps {
   images: string[];
   title?: string;
+  fit?: "cover" | "contain";
 }
 const ScreenshotGallery = ({
   images,
-  title = "Overview Screenshots"
+  title = "Overview Screenshots",
+  fit = "cover"
 }: ScreenshotGalleryProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -99,10 +101,10 @@ const ScreenshotGallery = ({
 
           {/* Image Container */}
           <div className="relative w-full max-w-3xl">
-            <div className={`relative aspect-video bg-background-secondary rounded-xl overflow-hidden border border-border/50 shadow-lg ${images[currentIndex] && images[currentIndex].trim() !== "" ? 'cursor-pointer group' : ''}`} onClick={images[currentIndex] && images[currentIndex].trim() !== "" ? openLightbox : undefined}>
+            <div className={`relative ${fit === "contain" ? "aspect-[16/10]" : "aspect-video"} bg-background rounded-xl overflow-hidden border border-border/50 shadow-lg ${images[currentIndex] && images[currentIndex].trim() !== "" ? 'cursor-pointer group' : ''}`} onClick={images[currentIndex] && images[currentIndex].trim() !== "" ? openLightbox : undefined}>
               <AnimatePresence mode="wait">
                 {images[currentIndex] && images[currentIndex].trim() !== "" ? (
-                  <motion.img key={currentIndex} src={images[currentIndex]} alt={`Screenshot ${currentIndex + 1}`} className="w-full h-full object-cover" initial={{
+                  <motion.img key={currentIndex} src={images[currentIndex]} alt={`Screenshot ${currentIndex + 1}`} className={`w-full h-full object-${fit}`} initial={{
                     opacity: 0
                   }} animate={{
                     opacity: 1
