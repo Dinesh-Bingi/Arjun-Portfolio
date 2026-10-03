@@ -90,7 +90,7 @@ const ProjectSection = ({ category, title, id, showHeader = true }: ProjectSecti
         <div className="w-12 h-px bg-gradient-to-l from-transparent to-primary" />
       </div>
 
-      <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground mb-4 relative">
+      <h2 className="font-section-title text-3xl md:text-5xl font-normal text-foreground mb-4 relative">
         <span className="relative z-10">{title}</span>
         <span 
           className="absolute inset-0 blur-2xl opacity-40 bg-gradient-to-r from-primary/50 via-purple-400/40 to-pink-400/30 -z-10"
@@ -217,7 +217,7 @@ const ProjectsSection = () => {
         <div className="w-12 h-px bg-gradient-to-l from-transparent to-primary" />
       </div>
 
-      <h2 className="font-display text-3xl md:text-5xl font-bold text-foreground">
+      <h2 className="font-section-title text-3xl md:text-5xl font-normal text-foreground">
         Professional Work
       </h2>
     </div>
